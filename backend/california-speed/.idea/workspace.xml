@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f7c6fd90-8ef1-4fde-b3a8-86ef0a082948" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/cards.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/example.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/example.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/img/cards.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/jquery-1.7.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c1.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c10.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c11.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c12.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c13.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c14.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c3.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c4.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c5.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c6.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c7.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c8.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/c9.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/cardback_blue.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/cardback_red.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d1.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d10.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d11.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d12.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d13.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d14.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d3.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d4.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d5.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d6.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d7.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d8.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/d9.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h1.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h10.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h11.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h12.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h13.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h14.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h3.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h4.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h5.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h6.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h7.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h8.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/h9.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/joker_black.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/joker_red.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s1.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s10.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s11.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s12.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s13.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s14.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s2.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s3.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s4.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s5.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s6.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s7.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s8.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../cards.js-gh-pages/svg/s9.svg" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/build.gradle" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="y" value="24" />
+    <option name="width" value="960" />
+    <option name="height" value="1032" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="california-speed" type="b2602c69:ProjectViewProjectNode" />
+              <item name="california-speed" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="california-speed" type="b2602c69:ProjectViewProjectNode" />
+              <item name="california-speed" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="california-speed" type="b2602c69:ProjectViewProjectNode" />
+              <item name="california-speed" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f7c6fd90-8ef1-4fde-b3a8-86ef0a082948" name="Default Changelist" comment="" />
+      <created>1562034871915</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1562034871915</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="24" width="960" height="1032" extended-state="4" />
+    <layout>
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3377193" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Build" visible="true" weight="0.3292683" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Gradle" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>11</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
