@@ -13,14 +13,18 @@ class GameBoard extends React.Component {
 
     handleCardClick(e, pile) {
         let {pileSelected, board} = this.state;
-        console.log(e);
+        console.log(board);
+
         if (pileSelected) {
             board.tryMatch(pile, pileSelected);
+
+            if (board.gameOver()) {
+                board.gameWon() ? this.props.gameWon() : this.props.gameLost();
+            }
+
             this.setState({pileSelected : null});
-            console.log('selected');
         } else {
             this.setState({pileSelected : pile});
-            console.log('not selected');
         }
     }
 
@@ -29,9 +33,9 @@ class GameBoard extends React.Component {
 
         return (
             <div id="gameBoard">
-                <Deck />
+                {!board.opponentDeck.isEmpty() && <Deck />}
                 {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} />)}
-                <Deck />
+                {!board.playerDeck.isEmpty() && <Deck />}
             </div>
         );
     }
