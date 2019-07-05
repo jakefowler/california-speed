@@ -11,6 +11,16 @@ class Deck {
                     this.deck.push(new Card(suit, rank));
                 }
             }
+
+            this.shuffle();
+        }
+    }
+
+    shuffle() {
+        //Taken from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+        for (let i = this.deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
         }
     }
 

@@ -28,6 +28,21 @@ export class Board {
 
         return false;
     }
+
+    tryMatch(firstPile, secondPile) {
+        if (firstPile.peek().equalRank(secondPile.peek())) {
+            firstPile.addToStart(this.playerDeck.drawOne());
+            secondPile.addToStart(this.playerDeck.drawOne());
+        }
+    }
+
+    gameWon() {
+        return this.playerDeck.isEmpty();
+    }
+
+    gameOver() {
+        return this.gameWon() || this.opponentDeck.isEmpty();
+    }
 }
 
 export default Board;
