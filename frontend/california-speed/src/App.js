@@ -24,7 +24,7 @@ class App extends React.Component {
         <GameBoard gameLost={this.gameLost.bind(this)} gameWon={this.gameWon.bind(this)} />
         {this.state.gameOver && <div className='overlay'>
           <div className='overlay-content'>
-            <h1>You {this.state.gameWon ? 'Win!' : 'Lose'}</h1>
+            <h1>You {this.state.gameWon ? 'Win!' : 'Lose'}...</h1>
           </div>
         </div>}
       </div>
