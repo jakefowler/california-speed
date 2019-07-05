@@ -18,21 +18,35 @@ export class Board {
     }
 
     playablePile(pile) {
-        let otherPiles = this.piles.filter(p => p === pile);
+        let otherPiles = this.piles.filter(p => p !== pile);
 
-        otherPiles.forEach(p => {
+        for (const p of otherPiles) {
             if (p.peek().equalRank(pile.peek())) {
                 return true;
             }
-        });
+        }
+
+        return false;
+    }
+
+    playableMoves() {
+        for (const pile of this.piles) {
+            if (this.playablePile(pile)) {
+                return true;
+            }
+        }
 
         return false;
     }
 
     tryMatch(firstPile, secondPile) {
-        if (firstPile.peek().equalRank(secondPile.peek())) {
+        if (firstPile !== secondPile && firstPile.peek().equalRank(secondPile.peek())) {
             firstPile.addToStart(this.playerDeck.drawOne());
-            secondPile.addToStart(this.playerDeck.drawOne());
+
+            //Check if the player has already won by playing the first card before playing the second
+            if (!this.gameWon()) {
+                secondPile.addToStart(this.playerDeck.drawOne());
+            }
         }
     }
 
@@ -42,6 +56,21 @@ export class Board {
 
     gameOver() {
         return this.gameWon() || this.opponentDeck.isEmpty();
+    }
+
+    redrawPiles() {
+        let opponentPiles = this.piles.slice(0, 4);
+        let playerPiles = this.piles.slice(4);
+
+        opponentPiles.forEach(pile => {
+            pile.dealInto(this.opponentDeck);
+            pile.addToStart(this.opponentDeck.drawOne());
+        });
+
+        playerPiles.forEach(pile => {
+            pile.dealInto(this.playerDeck);
+            pile.addToStart(this.playerDeck.drawOne());
+        });
     }
 }
 
