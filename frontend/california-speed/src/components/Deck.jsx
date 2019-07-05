@@ -2,7 +2,9 @@ import React from 'react'
 
 class Deck extends React.Component {
     render() {
-        return <img src="../card-images/deck.png"></img>
+        return (<div className='deck'> 
+            <img src={`${process.env.PUBLIC_URL}/card_images/red_back.png`}></img>
+        </div>);
     }
 }
 
