@@ -10,6 +10,8 @@ class GameBoard extends React.Component {
         super(props);
 
         let gameBoard = new BoardModel();
+        gameBoard.onGameOver(() => this.gameOver());
+        gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
         this.state = {board: gameBoard, playablePile : gameBoard.playableMoves()};
     }
 
@@ -20,14 +22,16 @@ class GameBoard extends React.Component {
         if (pileSelected) {
             board.tryMatch(pile, pileSelected);
 
-            if (board.gameOver()) {
-                board.gameWon() ? this.props.gameWon() : this.props.gameLost();
-            }
-
-            this.setState({pileSelected : null, playablePile : board.playableMoves()});
+            this.setState({pileSelected : null});
         } else {
             this.setState({pileSelected : pile});
         }
+    }
+
+    gameOver() {
+        let {board} = this.state;
+
+        board.gameWon() ? this.props.gameWon() : this.props.gameLost();
     }
 
     render() {
@@ -38,7 +42,7 @@ class GameBoard extends React.Component {
                 {!board.opponentDeck.isEmpty() && <Deck />}
                 {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} />)}
                 {!board.playerDeck.isEmpty() && <Deck />}
-                {!playablePile && <div className='overlay'>
+                {!playablePile && !board.gameWon() && <div className='overlay'>
                     <div className='overlay-content'>
                         <h1>There are no playable piles</h1>
                         <button onClick={() => {

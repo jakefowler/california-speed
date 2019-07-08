@@ -47,6 +47,14 @@ export class Board {
             if (!this.gameWon()) {
                 secondPile.addToStart(this.playerDeck.drawOne());
             }
+
+            if (this.gameWon() && !!this.gameOverCallback) {
+                this.gameOverCallback();
+            }
+
+            if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
+                this.noPlayablePilesCallback();
+            }
         }
     }
 
@@ -56,6 +64,14 @@ export class Board {
 
     gameOver() {
         return this.gameWon() || this.opponentDeck.isEmpty();
+    }
+
+    onGameOver(callback) {
+        this.gameOverCallback = callback;
+    }
+
+    onNoPlayablePiles(callback) {
+        this.noPlayablePilesCallback = callback;
     }
 
     redrawPiles() {
