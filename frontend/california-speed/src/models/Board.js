@@ -15,6 +15,10 @@ export class Board {
         this.opponentDeck = new Deck(false);
 
         mainDeck.dealInto(this.playerDeck, this.opponentDeck);
+
+        while (!this.playableMoves()) {
+            this.redrawPiles();
+        }
     }
 
     playablePile(pile) {
