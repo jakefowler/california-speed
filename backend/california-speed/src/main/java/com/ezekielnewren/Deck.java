@@ -56,8 +56,8 @@ public class Deck {
 
     /**
      * This method is for retrieving four cards and returning them as a new Deck to be placed in front of the player.
-     * The placed cards are kept as a deck so they can be retrieved when no cards can be place and added back into the
-     * main deck with the addDeck() method.
+     * The placed cards are kept as a deck so more cards can be added and they can be retrieved when no cards can be
+     * place. They are then able to be added back into the main deck with the addDeck() method.
      *
      * @return Deck filled with four cards from main deck.
      */
@@ -67,4 +67,11 @@ public class Deck {
         this.deck.subList(0, 4).clear();
         return placedDeck;
     }
+
+    public Card drawCard() {
+        Card drawnCard = this.deck.get(0);
+        this.deck.remove(0);
+        return drawnCard;
+    }
+
 }

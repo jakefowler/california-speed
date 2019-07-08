@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="CardTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-07-08T22:41:32" hostname="Jakes-MacBook-Pro.local" time="0.021">
+<testsuite name="CardTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2019-07-08T23:16:15" hostname="Jakes-MacBook-Pro.local" time="0.031">
   <properties/>
-  <testcase name="getRank" classname="CardTest" time="0.02"/>
-  <testcase name="getSuit" classname="CardTest" time="0.0"/>
+  <testcase name="Should_ReturnFalse_When_ComparingDifferentCards" classname="CardTest" time="0.024"/>
+  <testcase name="getRank" classname="CardTest" time="0.001"/>
+  <testcase name="getSuit" classname="CardTest" time="0.003"/>
+  <testcase name="Should_ReturnTrue_When_ComparingCardToItself" classname="CardTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

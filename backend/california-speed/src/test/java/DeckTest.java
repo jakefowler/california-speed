@@ -91,4 +91,14 @@ public class DeckTest {
         int actual = this.testDeck.getSize();
         assertEquals(expected, actual);
     }
+
+    @org.junit.Test
+    public void Should_DecreaseMainDeckSizeByOne_When_drawCardIsCalled() {
+        this.testDeck.fillDeck();
+        int sizeBefore = this.testDeck.getSize();
+        this.testDeck.drawCard();
+        int expected = sizeBefore - 1;
+        int actual = this.testDeck.getSize();
+        assertEquals(expected, actual);
+    }
 }
