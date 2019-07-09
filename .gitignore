@@ -8,6 +8,8 @@
 #gradlew
 #gradlew.bat
 
+**/build/
+**/.idea/workspace.xml
 
 # User-specific files
 *.suo
