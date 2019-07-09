@@ -1,0 +1,97 @@
+body {
+  background-color: forestgreen;
+}
+
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  content:"";
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  animation: fadein 200ms;
+}
+
+.overlay .overlay-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#gameBoard {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 25% 25% 25% 25%;
+  grid-auto-flow: row;
+  place-content: center;
+  grid-row-gap: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+#gameBoard img {
+  max-width:100%;
+  max-height:100%;
+  display: block;
+  justify-self: center;
+  align-self: center;
+}
+
+#gameBoard .deck {
+  grid-column: 1 / span 4;
+  justify-self: center;
+  align-self: center;
+}
+
+#gameBoard .pile {
+  border: 4px solid rgba(251, 255, 19, 0);
+  justify-self: center;
+  align-self: center;
+  border-radius: 5%;
+}
+
+#gameBoard .pile.selected {
+  border-color: rgb(251, 255, 19);
+  position: relative;
+  display: inline-block;
+}
+
+#gameBoard .selected:after {
+  background: rgba(251, 255, 19, 0.363);
+  position: absolute;
+  content:"";
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+}
+
+.container {
+  box-sizing: border-box;
+  padding-top: 10px;
+  margin: auto;
+  width: 800px;
+  height: 800px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+      width: 95vw;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .container {
+      height: 95vh;
+  }
+}
