@@ -1,7 +1,6 @@
 import React from 'react'
 import Pile from './Pile'
 import Deck from './Deck'
-import {Card as CardModel} from '../models/Card'
 import {Board as BoardModel} from '../models/Board'
 
 class GameBoard extends React.Component {

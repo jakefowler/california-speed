@@ -61,7 +61,7 @@ class Deck {
     }
 
     isEmpty() {
-        return this.deck.length == 0;
+        return this.deck.length === 0;
     }
 
     dealInto(...otherDecks) {

@@ -12,11 +12,11 @@ export class Card {
     }
 
     equalRank(otherCard) {
-        return this.rank == otherCard.rank;
+        return this.rank === otherCard.rank;
     }
 
     equalSuit(otherCard) {
-        return this.suit == otherCard.suit;
+        return this.suit === otherCard.suit;
     }
 
     equals(otherCard) {
