@@ -8,7 +8,7 @@ class Card extends React.Component {
     }
 
     render() {
-        let baseURL = `${process.env.PUBLIC_URL}/card_images/svg-cards.svg`;
+        let baseURL = `${process.env.PUBLIC_URL}/card_images/card-image-parts.svg`;
         let card = this.props.card;
 
         return <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 169.075 244.64" >
