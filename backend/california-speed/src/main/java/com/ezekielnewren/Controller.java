@@ -8,14 +8,21 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-public class Controller extends WebSocketAdapter {
+public class Controller extends WebSocketServlet {
     private static final Logger log = Log.getLogger(Controller.class);
-    UUID id;
+
+    static final Controller instance = new Controller();
+    Set<Player> players = new HashSet<>();
+
 
     public static void go(String[] args) {
 
@@ -31,7 +38,7 @@ public class Controller extends WebSocketAdapter {
         server.setHandler(context);
 
         // Add a websocket to a specific path spec
-        ServletHolder holderEvents = new ServletHolder("ws-events", ControllerServlet.class);
+        ServletHolder holderEvents = new ServletHolder("ws-events", Controller.class);
         context.addServlet(holderEvents, "/events/*");
 
         try {
@@ -45,51 +52,20 @@ public class Controller extends WebSocketAdapter {
     }
 
     @Override
-    public void onWebSocketConnect(Session sess) {
-        super.onWebSocketConnect(sess);
-        log.info("Socket Connected: " + sess);
-        id = UUID.randomUUID();
-        send(id.toString());
+    public void configure(WebSocketServletFactory factory) {
+        factory.register(Player.class);
     }
 
-    @Override
-    public void onWebSocketBinary(byte[] b, int off, int len) {
-        super.onWebSocketBinary(b, off, len);
+    public static Controller getInstance() {
+        return instance;
     }
 
-    @Override
-    public void onWebSocketText(String message) throws RuntimeException {
-        super.onWebSocketText(message);
-        log.info("Received TEXT message: " + message);
-
-        send("right back at ya");
+    public void register(Player player) {
+        players.add(player);
     }
 
-    @Override
-    public void onWebSocketClose(int statusCode, String reason) {
-        super.onWebSocketClose(statusCode,reason);
-        log.info("Socket Closed: [" + statusCode + "] " + reason);
-    }
-
-    @Override
-    public void onWebSocketError(Throwable cause) {
-        super.onWebSocketError(cause);
-        log.warn(cause);
-        //cause.printStackTrace(System.err);
-    }
-
-    public void send(String msg) throws RuntimeException {
-        try {
-            getRemote().sendString(msg);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-    }
-
-    public void send(JSONObject json) {
-        String tmp = json.toString();
-        if (tmp == null) throw new NullPointerException("is the json formatted correctly?");
-        send(tmp);
+    public void unregister(Player player) {
+        players.remove(player);
     }
 
 }
