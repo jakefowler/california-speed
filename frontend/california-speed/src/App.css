@@ -3,6 +3,12 @@ body {
   font-family: Candara,Calibri,Segoe,Segoe UI,Optima,Arial,sans-serif; 
 }
 
+@font-face {
+  font-family: 'Hoyle Playing Cards';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Hoyle Playing Cards'), url('fonts/Hoyle Playing Cards.woff') format('woff');
+}
 
 @keyframes fadein {
   from { opacity: 0; }
