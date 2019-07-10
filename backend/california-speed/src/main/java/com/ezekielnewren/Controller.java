@@ -8,12 +8,14 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class Controller extends WebSocketAdapter {
-
     private static final Logger log = Log.getLogger(Controller.class);
+    UUID id;
 
     public static void go(String[] args) {
 
@@ -46,11 +48,13 @@ public class Controller extends WebSocketAdapter {
     public void onWebSocketConnect(Session sess) {
         super.onWebSocketConnect(sess);
         log.info("Socket Connected: " + sess);
+        id = UUID.randomUUID();
+        send(id.toString());
     }
 
     @Override
     public void onWebSocketBinary(byte[] b, int off, int len) {
-
+        super.onWebSocketBinary(b, off, len);
     }
 
     @Override
@@ -58,12 +62,7 @@ public class Controller extends WebSocketAdapter {
         super.onWebSocketText(message);
         log.info("Received TEXT message: " + message);
 
-        try {
-            this.getRemote().sendString("right back at ya");
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-
+        send("right back at ya");
     }
 
     @Override
@@ -75,7 +74,22 @@ public class Controller extends WebSocketAdapter {
     @Override
     public void onWebSocketError(Throwable cause) {
         super.onWebSocketError(cause);
-        cause.printStackTrace(System.err);
+        log.warn(cause);
+        //cause.printStackTrace(System.err);
+    }
+
+    public void send(String msg) throws RuntimeException {
+        try {
+            getRemote().sendString(msg);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
+    public void send(JSONObject json) {
+        String tmp = json.toString();
+        if (tmp == null) throw new NullPointerException("is the json formatted correctly?");
+        send(tmp);
     }
 
 }
