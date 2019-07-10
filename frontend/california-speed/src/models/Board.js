@@ -50,8 +50,6 @@ export class Board {
 
             return true;
         } else if (!!this.prevPlayedCard && this.prevPlayedCard.equalRank(pile.peek())) {
-            this.prevPlayedCard = null;
-
             this.playOnPile(pile);
 
             if (!this.playableMoves() && !!this.noPlayablePilesCallback) {

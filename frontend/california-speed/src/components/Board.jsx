@@ -15,20 +15,12 @@ class GameBoard extends React.Component {
     }
 
     handleCardClick(e, pile) {
-        let {prevCardSelected, board} = this.state;
+        let {board} = this.state;
         console.log(board);
 
-        board.tryPlayOnPile(pile);
-        this.setState({prevCardSelected : null});
-        // if (prevCardSelected) {
-        //     board.tryMatch(pile, pileSelected);
-
-        //     this.setState({prevCardSelected : null});
-        // } else {
-        //     if (board.playOnPile(pile)) {
-        //         this.setState({prevCardSelected : pile.peek()});
-        //     }
-        // }
+        if (board.tryPlayOnPile(pile)) {
+            this.forceUpdate();
+        }
     }
 
     gameOver() {
