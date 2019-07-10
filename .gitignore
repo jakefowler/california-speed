@@ -9,7 +9,7 @@
 #gradlew.bat
 
 **/build/
-**/.idea/workspace.xml
+**/.idea/
 
 # User-specific files
 *.suo
