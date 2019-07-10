@@ -3,6 +3,8 @@ package com.ezekielnewren.jettydemo;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
+import java.io.IOException;
+
 public class EventSocket extends WebSocketAdapter
 {
     @Override
@@ -13,10 +15,22 @@ public class EventSocket extends WebSocketAdapter
     }
 
     @Override
-    public void onWebSocketText(String message)
+    public void onWebSocketBinary(byte[] b, int off, int len) {
+
+    }
+
+    @Override
+    public void onWebSocketText(String message) throws RuntimeException
     {
         super.onWebSocketText(message);
         System.out.println("Received TEXT message: " + message);
+
+        try {
+            this.getRemote().sendString("right back at ya");
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+
     }
 
     @Override
