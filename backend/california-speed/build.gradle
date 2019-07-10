@@ -18,7 +18,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.json/json
     compile 'org.json:json:20180813'
     
-    
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server
+    //compile 'org.eclipse.jetty:jetty-server:9.4.7.RC0'
+
+    compile 'org.eclipse.jetty:jetty-maven-plugin:9.4.19.v20190610'
+
+//    compile 'javax.websocket:javax.websocket-api:1.1'
+//    compile 'com.google.code.gson:gson:2.8.0'
 
 
 }
