@@ -45,7 +45,7 @@ public class Controller extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(Session sess) {
         super.onWebSocketConnect(sess);
-        System.out.println("Socket Connected: " + sess);
+        log.info("Socket Connected: " + sess);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Controller extends WebSocketAdapter {
     @Override
     public void onWebSocketText(String message) throws RuntimeException {
         super.onWebSocketText(message);
-        System.out.println("Received TEXT message: " + message);
+        log.info("Received TEXT message: " + message);
 
         try {
             this.getRemote().sendString("right back at ya");
@@ -69,7 +69,7 @@ public class Controller extends WebSocketAdapter {
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
         super.onWebSocketClose(statusCode,reason);
-        System.out.println("Socket Closed: [" + statusCode + "] " + reason);
+        log.info("Socket Closed: [" + statusCode + "] " + reason);
     }
 
     @Override
