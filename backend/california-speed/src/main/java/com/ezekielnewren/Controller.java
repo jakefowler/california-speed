@@ -13,15 +13,13 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Controller extends WebSocketServlet {
     private static final Logger log = Log.getLogger(Controller.class);
 
     static final Controller instance = new Controller();
-    Set<Player> players = new HashSet<>();
+    Map<UUID, Player> players = new HashMap<>();
 
 
     public static void go(String[] args) {
@@ -56,16 +54,49 @@ public class Controller extends WebSocketServlet {
         factory.register(Player.class);
     }
 
+    public void sendAll(String packet) {
+        for (UUID id: players.keySet()) {
+            Player p = players.get(id);
+            p.send(packet);
+        }
+    }
+
+    public void sendAll(JSONObject json) {
+        sendAll(json.toString());
+    }
+
     public static Controller getInstance() {
         return instance;
     }
 
     public void register(Player player) {
-        players.add(player);
+        players.put(player.getUUID(), player);
+        player.valid = true;
     }
 
     public void unregister(Player player) {
+        player.valid = false;
         players.remove(player);
     }
 
+
+    public JSONObject toJsonPlayer(Player p) {
+        JSONObject json = new JSONObject();
+        json.put("player", new JSONObject());
+        JSONObject player = json.getJSONObject("player");
+        player.put("id", p.id.toString());
+        player.put("name", p.name);
+        return json;
+    }
+
+    public Player fromJsonPlayer(JSONObject json) {
+        JSONObject player = json.getJSONObject("player");
+        UUID id = UUID.fromString(player.getString("id"));
+        Player pobj = players.get(id);
+        return pobj;
+    }
+
 }
+
+
+

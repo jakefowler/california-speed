@@ -17,6 +17,7 @@ public class Player extends WebSocketAdapter implements Closeable {
 
     UUID id;
     String name;
+    boolean valid;
 
     public Player() {
         ctrl = Controller.getInstance();
@@ -28,7 +29,8 @@ public class Player extends WebSocketAdapter implements Closeable {
         super.onWebSocketConnect(sess);
         log.info("Socket Connected: " + sess);
         id = UUID.randomUUID();
-        send(id.toString());
+
+        send(new JSONObject().put("push", ctrl.toJsonPlayer(this)));
     }
 
     @Override
@@ -55,6 +57,18 @@ public class Player extends WebSocketAdapter implements Closeable {
         super.onWebSocketError(cause);
         log.warn(cause);
         //cause.printStackTrace(System.err);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Player)) return false;
+        Player that = (Player) other;
+        return this.id.equals(that.id);
     }
 
     public UUID getUUID() {

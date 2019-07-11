@@ -4,6 +4,9 @@ import org.eclipse.jetty.util.log.AbstractLogger;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.log.StdErrLog;
+import org.json.JSONObject;
+
+import java.util.UUID;
 
 public class Driver {
     private static final Logger log;
@@ -19,6 +22,14 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        Controller.go(args);
+        UUID id = UUID.randomUUID();
+
+
+
+
+        log.info(raw.toString());
+
+
+        //Controller.go(args);
     }
 }
