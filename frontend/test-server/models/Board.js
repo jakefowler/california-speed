@@ -1,7 +1,6 @@
-import Deck from './Deck'
-import Card from './Card';
+const Deck = require('./Deck');
 
-export class Board {
+class Board {
     constructor() {
         let mainDeck = new Deck(true);
 
@@ -126,20 +125,6 @@ export class Board {
             pile.addToStart(this.playerDeck.drawOne());
         });
     }
-
-    updatePiles(piles) {
-        piles.forEach((pile, i) => {
-            this.piles[i] = deckFromArray(pile.deck);
-        });
-    }
 }
 
-function deckFromArray(array) {
-    let deck = new Deck(false);
-
-    array.forEach((card) => deck.addToEnd(new Card(card.suit, card.rank)));
-
-    return deck;
-}
-
-export default Board;
+module.exports = Board;

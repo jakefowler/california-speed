@@ -11,22 +11,45 @@ class GameBoard extends React.Component {
         let gameBoard = new BoardModel();
         gameBoard.onGameOver(() => this.gameOver());
         gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
-        this.state = {board: gameBoard, playablePile : gameBoard.playableMoves()};
+
+        let ws = new WebSocket('ws://localhost:8080');
+        ws.onmessage = (message) => {
+            console.log(message.data);
+            let data = JSON.parse(message.data)
+
+            if (!!data.board) {
+                this.updateBoardFromServer(data.board.piles);
+            } else if (!!data.gameOver) {
+                this.gameOver();
+            }
+        };
+
+        this.state = {board: gameBoard, playablePile : gameBoard.playableMoves(), websocket : new WebSocket('ws://localhost:8080')};
     }
 
     handleCardClick(e, pile) {
-        let {board} = this.state;
+        let {board, websocket} = this.state;
         console.log(board);
 
-        if (board.tryPlayOnPile(pile)) {
-            this.forceUpdate();
+        if (websocket.readyState == websocket.OPEN) {
+            websocket.send(JSON.stringify({claim: {pile: board.piles.indexOf(pile)}}));
         }
+
+        // if (board.tryPlayOnPile(pile)) {
+        //     this.forceUpdate();
+        // }
+    }
+
+    updateBoardFromServer(piles) {
+        this.state.board.updatePiles(piles);
+        this.forceUpdate();
     }
 
     gameOver() {
-        let {board} = this.state;
+        this.props.gameWon()
+        // let {board} = this.state;
 
-        board.gameWon() ? this.props.gameWon() : this.props.gameLost();
+        // board.gameWon() ? this.props.gameWon() : this.props.gameLost();
     }
 
     render() {
@@ -34,9 +57,19 @@ class GameBoard extends React.Component {
 
         return (
             <div id="gameBoard">
-                {!board.opponentDeck.isEmpty() && <Deck />}
+                <div className='deck-row'>
+                    {!board.opponentDeck.isEmpty() && <Deck />}
+                    <div className='name right'>
+                        <h1>{this.props.playerName}</h1>
+                    </div>
+                </div>
                 {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} />)}
-                {!board.playerDeck.isEmpty() && <Deck />}
+                <div className='deck-row'>
+                    {!board.playerDeck.isEmpty() && <Deck />}
+                    <div className='name'>
+                        <h1>{this.props.playerName}</h1>
+                    </div>
+                </div>
                 {!playablePile && !board.gameWon() && <div className='overlay'>
                     <div className='overlay-content'>
                         <h1>There are no playable piles</h1>
