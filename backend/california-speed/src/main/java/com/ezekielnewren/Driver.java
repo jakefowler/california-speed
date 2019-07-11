@@ -22,14 +22,6 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        UUID id = UUID.randomUUID();
-
-
-
-
-        log.info(raw.toString());
-
-
-        //Controller.go(args);
+        Controller.go(args);
     }
 }
