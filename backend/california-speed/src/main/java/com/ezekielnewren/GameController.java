@@ -9,6 +9,7 @@ public class GameController {
     private Deck playerOnePlacedDeck;
     private Deck playerTwoPlacedDeck;
 
+
     public GameController() {
         this.playerOneDeck = new Deck();
         this.playerOneDeck.fillDeck();
@@ -49,6 +50,28 @@ public class GameController {
                 }
             }
         }
+    }
+
+    public boolean onClaim(Player p, int pile) {
+        return true;
+    }
+
+    public void updateGameboard() {
+        Card[] state = null;
+        ctrl.updateBoard(state);
+
+
+    }
+
+    public boolean checkMatch(String card1, String card2) {
+        return true;
+    }
+
+    public void placeCard(Deck placedDeck, int index) {
+        if (index < 4) {
+
+        }
+
     }
 
 }
