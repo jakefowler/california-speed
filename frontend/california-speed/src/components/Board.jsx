@@ -1,7 +1,6 @@
 import React from 'react'
 import Pile from './Pile'
 import Deck from './Deck'
-import {Card as CardModel} from '../models/Card'
 import {Board as BoardModel} from '../models/Board'
 
 class GameBoard extends React.Component {
@@ -16,15 +15,11 @@ class GameBoard extends React.Component {
     }
 
     handleCardClick(e, pile) {
-        let {pileSelected, board} = this.state;
+        let {board} = this.state;
         console.log(board);
 
-        if (pileSelected) {
-            board.tryMatch(pile, pileSelected);
-
-            this.setState({pileSelected : null});
-        } else {
-            this.setState({pileSelected : pile});
+        if (board.tryPlayOnPile(pile)) {
+            this.forceUpdate();
         }
     }
 

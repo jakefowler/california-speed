@@ -101,4 +101,33 @@ public class DeckTest {
         int actual = this.testDeck.getSize();
         assertEquals(expected, actual);
     }
+
+    @org.junit.Test
+    public void Should_ReplaceCard_When_placeCardIsCalled() {
+        this.testDeck.fillDeck();
+        Deck placedDeck = this.testDeck.getNewPlacedDeck();
+        Card testCard = new Card('H', 1);
+        placedDeck.placeCard(3, testCard);
+        String expectedSuit = "HEART";
+        String actualSuit = placedDeck.getDeck().get(3).getSuit();
+        assertEquals(expectedSuit, actualSuit);
+        int expectedRank = 1;
+        int actualRank = placedDeck.getDeck().get(3).getRank();
+        assertEquals(expectedRank, actualRank);
+    }
+
+    @org.junit.Test
+    public void Should_MoveOldCardToBack_When_placeCardIsCalled() {
+        this.testDeck.fillDeck();
+        Deck placedDeck = this.testDeck.getNewPlacedDeck();
+        Card testCard = new Card('H', 1);
+        Card cardThatIsMoved = placedDeck.getDeck().get(3);
+        String expectedSuit = cardThatIsMoved.getSuit();
+        int expectedRank = cardThatIsMoved.getRank();
+        placedDeck.placeCard(3, testCard);
+        String actualSuit = placedDeck.getDeck().get(placedDeck.getSize() - 1).getSuit();
+        int actualRank = placedDeck.getDeck().get(placedDeck.getSize() - 1).getRank();
+        assertEquals(expectedSuit, actualSuit);
+        assertEquals(expectedRank, actualRank);
+    }
 }

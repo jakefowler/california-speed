@@ -14,10 +14,10 @@ public class Deck {
      */
     public void fillDeck() {
         for (int i = 1; i < 14; i++) {
-            addCard(new Card('S', i));
-            addCard(new Card('H', i));
-            addCard(new Card('D', i));
-            addCard(new Card('C', i));
+            addCard(new Card('s', i));
+            addCard(new Card('h', i));
+            addCard(new Card('d', i));
+            addCard(new Card('c', i));
         }
     }
 
@@ -72,6 +72,23 @@ public class Deck {
         Card drawnCard = this.deck.get(0);
         this.deck.remove(0);
         return drawnCard;
+    }
+
+    /**
+     * Replaces card at location with passed in card and places the old card at the back of the deck.
+     * Used for the placed down deck of four visible cards that both players will have.
+     *
+     * @param index int 0 to 3 for the location the card is to be placed
+     * @param card Card that should be put in the location
+     * @return boolean determining whether card was successfully placed
+     */
+    public boolean placeCard(int index, Card card) {
+        if (index > 3 || index < 0) {
+            return false;
+        }
+        this.deck.add(this.deck.get(index));
+        this.deck.add(index, card);
+        return true;
     }
 
 }

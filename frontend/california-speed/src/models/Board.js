@@ -1,4 +1,3 @@
-import Card from './Card'
 import Deck from './Deck'
 
 export class Board {
@@ -41,6 +40,40 @@ export class Board {
         }
 
         return false;
+    }
+
+    tryPlayOnPile(pile) {
+        if (this.playablePile(pile)) {
+            this.prevPlayedCard = pile.peek();
+            
+            this.playOnPile(pile);
+
+            return true;
+        } else if (!!this.prevPlayedCard && this.prevPlayedCard.equalRank(pile.peek())) {
+            this.playOnPile(pile);
+
+            if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
+                this.noPlayablePilesCallback();
+            }
+
+            return true;
+        } else if (!this.prevPlayedCard) {
+            if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
+                this.noPlayablePilesCallback();
+            }
+
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    playOnPile(pile) {
+        pile.addToStart(this.playerDeck.drawOne());
+
+        if (this.gameWon() && !!this.gameOverCallback) {
+            this.gameOverCallback();
+        }
     }
 
     tryMatch(firstPile, secondPile) {

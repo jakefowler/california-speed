@@ -1,5 +1,5 @@
-export let cardRanks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'];
-export let cardSuits = ['H', 'D', 'C', 'S'];
+export let cardRanks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'jack', 'queen', 'king', 'ace'];
+export let cardSuits = ['heart', 'diamond', 'club', 'spade'];
 
 export class Card {
 
@@ -12,11 +12,11 @@ export class Card {
     }
 
     equalRank(otherCard) {
-        return this.rank == otherCard.rank;
+        return this.rank === otherCard.rank;
     }
 
     equalSuit(otherCard) {
-        return this.suit == otherCard.suit;
+        return this.suit === otherCard.suit;
     }
 
     equals(otherCard) {
