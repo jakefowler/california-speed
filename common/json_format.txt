@@ -41,11 +41,7 @@
 					"name": "carl"
 				}
 				"claim": {
-					"card": "s11",
-					"pile": { 
-						"x": 3,
-						"y": 0
-					}
+					"pile": 3
 				}
 			}
 		}
