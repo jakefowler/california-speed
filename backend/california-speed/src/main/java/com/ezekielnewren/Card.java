@@ -11,6 +11,7 @@ public class Card {
 
     private Suit suit;
     private int rank;
+    private boolean hasMatch = false;
 
     public Card(char suit, int rank) {
         suit = Character.toLowerCase(suit);
@@ -60,5 +61,14 @@ public class Card {
         }
         return true;
     }
+
+    public void setHasMatch(boolean hasMatch) {
+        this.hasMatch = hasMatch;
+    }
+
+    public boolean getHasMatch() {
+        return this.hasMatch;
+    }
+
 
 }
