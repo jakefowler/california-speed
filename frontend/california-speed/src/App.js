@@ -7,7 +7,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {gameStarted : false, gameOver: false, gameWon: false};
+    this.state = {gameStarted : false, gameOver: false, gameWon: false, playerName: ''};
   }
 
   gameWon() {
@@ -25,10 +25,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
-        {this.state.gameStarted && <GameBoard gameLost={this.gameLost.bind(this)} gameWon={this.gameWon.bind(this)} />}
+        {this.state.gameStarted && <GameBoard playerName={this.state.playerName} gameLost={this.gameLost.bind(this)} gameWon={this.gameWon.bind(this)} />}
         {!this.state.gameStarted && <div className='overlay'>
           <div className='overlay-content'>
             <h1>Welcome to <em>California Speed</em></h1>
+            <input type='text' placeholder='Enter Name' onChange={(e) => this.setState({playerName: e.target.value})} value={this.state.playerName}></input>
             <button onClick={() => this.setState({gameStarted : true})}>Start Game</button>
           </div>
         </div>}
