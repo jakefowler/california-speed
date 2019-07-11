@@ -65,6 +65,10 @@ public class Controller extends WebSocketServlet {
         sendAll(json.toString());
     }
 
+    public void updateBoard(Card[] state) {
+
+    }
+
     public static Controller getInstance() {
         return instance;
     }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class GameController {
 
+    Controller ctrl;
+
     private Deck playerOneDeck;
     private Deck playerTwoDeck;
     private Deck playerOnePlacedDeck;
@@ -11,6 +13,7 @@ public class GameController {
 
 
     public GameController() {
+        ctrl = Controller.getInstance();
         this.playerOneDeck = new Deck();
         this.playerOneDeck.fillDeck();
         this.playerOneDeck.shuffle();
