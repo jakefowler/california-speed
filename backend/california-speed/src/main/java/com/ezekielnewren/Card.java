@@ -13,16 +13,17 @@ public class Card {
     private int rank;
 
     public Card(char suit, int rank) {
-        if (suit == 'S') {
+        suit = Character.toLowerCase(suit);
+        if (suit == 's') {
             this.suit = Suit.SPADE;
         }
-        else if (suit == 'H') {
+        else if (suit == 'h') {
             this.suit = Suit.HEART;
         }
-        else if (suit == 'D') {
+        else if (suit == 'd') {
             this.suit = Suit.DIAMOND;
         }
-        else if (suit == 'C') {
+        else if (suit == 'c') {
             this.suit = Suit.CLUB;
         }
         this.rank = rank;
@@ -53,10 +54,7 @@ public class Card {
         return this.rank;
     }
 
-    public boolean compareCards(Card card) {
-        if (!this.suit.toString().equals(card.getSuit())) {
-            return false;
-        }
+    public boolean compareRank(Card card) {
         if (this.rank != card.getRank()) {
             return false;
         }
