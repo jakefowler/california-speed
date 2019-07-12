@@ -4,44 +4,53 @@ const BoardModel = require('./models/Board');
 const wss = new WebSocket.Server({ port: 8080 });
 
 var board = null
+var players = [];
 
 wss.on('connection', function connection(ws) {
-    if (!board) {
-        board = new BoardModel();
-        board.onGameOver(() => {
-            sendMessageToAll(JSON.stringify({ gameOver: true }));
-            
-            sendGameState();
-
-            board = null
-        });
-        board.onNoPlayablePiles(() => {
-            if (!board.gameOver()) {
-                while (!board.playableMoves()) {
-                    board.redrawPiles();
-                }
-
-                sendGameState();
-            }
-        });
-    }
-
     ws.on('message', function incoming(message) {
         let data = JSON.parse(message);
 
         if (!!data.claim) {
+            console.log(board.players.find(player => player.name === data.claim.player));
             console.log('recieved: %s', message);
             console.log('piles: %s', JSON.stringify(board.piles));
-            console.log('valid move: %s', board.tryPlayOnPile(board.piles[data.claim.pile]));
+            console.log('valid move: %s', board.tryPlayOnPile(board.piles[data.claim.pile], board.players.find(player => player.name === data.claim.player)));
 
             if (!!board) {
+                sendGameState();
+            }
+        } else if (!!data.push.player) {
+            players.push(data.push.player);
+            console.log(players);
+
+            if (!board && players.length >= 2) {
+                board = new BoardModel(players);
+                board.onGameOver(() => {
+                    sendMessageToAll(JSON.stringify({ gameOver: true }));
+                    
+                    sendGameState();
+        
+                    board = null
+                });
+                board.onNoPlayablePiles(() => {
+                    if (!board.gameOver()) {
+                        while (!board.playableMoves()) {
+                            board.redrawPiles();
+                        }
+        
+                        sendGameState();
+                    }
+                });
+
                 sendGameState();
             }
         }
         
     });
 
-    sendGameState();
+    if (!!board) {
+        sendGameState();
+    }
 });
 
 function sendGameState() {

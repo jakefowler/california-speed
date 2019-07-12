@@ -1,8 +1,11 @@
 const Deck = require('./Deck');
 
 class Board {
-    constructor() {
+    constructor(players) {
         let mainDeck = new Deck(true);
+
+        this.players = players.map((player) => { return {name: player.name, deck: new Deck(false)} });
+        console.log(this.players);
 
         this.piles = Array.apply(null, Array(8));
         this.piles = this.piles.map(() => new Deck(false));
@@ -10,10 +13,11 @@ class Board {
         console.log(this.piles);
         this.piles.forEach(pile => pile.addToStart(mainDeck.drawOne()));
 
-        this.playerDeck = new Deck(false);
-        this.opponentDeck = new Deck(false);
+        // this.playerDeck = new Deck(false);
+        // this.opponentDeck = new Deck(false);
+        console.log(...this.players.map(player => player.deck));
 
-        mainDeck.dealInto(this.playerDeck, this.opponentDeck);
+        mainDeck.dealInto(...this.players.map(player => player.deck));
 
         while (!this.playableMoves()) {
             this.redrawPiles();
@@ -42,15 +46,15 @@ class Board {
         return false;
     }
 
-    tryPlayOnPile(pile) {
+    tryPlayOnPile(pile, player) {
         if (this.playablePile(pile)) {
             this.prevPlayedCard = pile.peek();
             
-            this.playOnPile(pile);
+            this.playOnPile(pile, player);
 
             return true;
         } else if (!!this.prevPlayedCard && this.prevPlayedCard.equalRank(pile.peek())) {
-            this.playOnPile(pile);
+            this.playOnPile(pile, player);
 
             if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
                 this.noPlayablePilesCallback();
@@ -68,24 +72,24 @@ class Board {
         }
     }
 
-    playOnPile(pile) {
-        pile.addToStart(this.playerDeck.drawOne());
+    playOnPile(pile, player) {
+        pile.addToStart(player.deck.drawOne());
 
-        if (this.gameWon() && !!this.gameOverCallback) {
+        if (this.gameOver() && !!this.gameOverCallback) {
             this.gameOverCallback();
         }
     }
 
-    tryMatch(firstPile, secondPile) {
+    tryMatch(firstPile, secondPile, player) {
         if (firstPile !== secondPile && firstPile.peek().equalRank(secondPile.peek())) {
-            firstPile.addToStart(this.playerDeck.drawOne());
+            firstPile.addToStart(player.deck.drawOne());
 
             //Check if the player has already won by playing the first card before playing the second
-            if (!this.gameWon()) {
-                secondPile.addToStart(this.playerDeck.drawOne());
+            if (!this.gameOver()) {
+                secondPile.addToStart(player.deck.drawOne());
             }
 
-            if (this.gameWon() && !!this.gameOverCallback) {
+            if (this.gameOver() && !!this.gameOverCallback) {
                 this.gameOverCallback();
             }
 
@@ -95,12 +99,12 @@ class Board {
         }
     }
 
-    gameWon() {
-        return this.playerDeck.isEmpty();
+    gameWon(player) {
+        return player.deck.isEmpty();
     }
 
     gameOver() {
-        return this.gameWon() || this.opponentDeck.isEmpty();
+        return this.players.some(player => player.deck.isEmpty());
     }
 
     onGameOver(callback) {
@@ -116,13 +120,19 @@ class Board {
         let playerPiles = this.piles.slice(4);
 
         opponentPiles.forEach(pile => {
-            pile.dealInto(this.opponentDeck);
-            pile.addToStart(this.opponentDeck.drawOne());
+            pile.dealInto(this.players[0].deck);
+            pile.addToStart(this.players[0].deck.drawOne());
         });
 
         playerPiles.forEach(pile => {
-            pile.dealInto(this.playerDeck);
-            pile.addToStart(this.playerDeck.drawOne());
+            pile.dealInto(this.players[1].deck);
+            pile.addToStart(this.players[1].deck.drawOne());
+        });
+    }
+
+    updatePiles(piles) {
+        piles.forEach((pile, i) => {
+            this.piles[i] = deckFromArray(pile.deck);
         });
     }
 }

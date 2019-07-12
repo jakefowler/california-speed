@@ -13,6 +13,11 @@ class GameBoard extends React.Component {
         gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
 
         let ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({push: {player: {name: this.props.playerName}}}));
+        };
+
         ws.onmessage = (message) => {
             console.log(message.data);
             let data = JSON.parse(message.data)
@@ -32,7 +37,7 @@ class GameBoard extends React.Component {
         console.log(board);
 
         if (websocket.readyState == websocket.OPEN) {
-            websocket.send(JSON.stringify({claim: {pile: board.piles.indexOf(pile)}}));
+            websocket.send(JSON.stringify({claim: {player: this.props.playerName, pile: board.piles.indexOf(pile)}}));
         }
 
         // if (board.tryPlayOnPile(pile)) {
