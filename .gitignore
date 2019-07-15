@@ -11,6 +11,9 @@
 **/build/
 **/.idea/
 
+## npm ignore files
+frontend/california-speed/package-lock.json
+
 # User-specific files
 *.suo
 *.user
