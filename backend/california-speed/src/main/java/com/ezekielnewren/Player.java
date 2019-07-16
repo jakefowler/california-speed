@@ -21,15 +21,26 @@ public class Player extends WebSocketAdapter implements Closeable {
 
     public Player() {
         ctrl = Controller.getInstance();
+
+    }
+
+    void init(UUID _id, String _name) {
+        id = _id;
+        name = _name;
+
         ctrl.register(this);
+    }
+
+    void init() {
+        init(UUID.randomUUID(), "");
     }
 
     @Override
     public void onWebSocketConnect(Session sess) {
         super.onWebSocketConnect(sess);
         log.info("Socket Connected: " + sess);
-        id = UUID.randomUUID();
-        name = "";
+
+        init();
 
         send(new JSONObject().put("push", ctrl.toJsonPlayer(this)));
     }
@@ -43,19 +54,27 @@ public class Player extends WebSocketAdapter implements Closeable {
     public void onWebSocketText(String message) throws RuntimeException {
         super.onWebSocketText(message);
         log.info("Received TEXT message: " + message);
-        JSONObject raw = new JSONObject(message);
+        JSONObject input = new JSONObject(message);
 
 
-        if (!raw.isNull("request")) {
-            if (!raw.isNull("request.msg")) {
+        if (!input.isNull("request")) {
+            JSONObject req = input.getJSONObject("request");
+            if (!req.isNull("msg")) {
                 JSONObject tmp = new JSONObject();
-                tmp.put("push.chat", ctrl.toJsonPlayer(this));
-                tmp.put("push.chat.msg", raw.getString("request.msg"));
 
+                tmp.put("push", new JSONObject());
+                JSONObject push = tmp.getJSONObject("push");
+
+                String msg = input.getJSONObject("request").getString("msg");
+
+                push.put("chat", ctrl.toJsonPlayer(this));
+                push.getJSONObject("chat").put("msg", msg);
+
+                ctrl.sendAll(tmp);
 
                 log.info("");
             } else {
-                log.warn("unknown request: "+raw.getJSONObject("request").toString());
+                log.warn("unknown request: "+input.getJSONObject("request").toString());
             }
         } else {
             log.warn("client sent something other than a request");
@@ -91,6 +110,7 @@ public class Player extends WebSocketAdapter implements Closeable {
     }
 
     public UUID getUUID() {
+        if (id == null) throw new NullPointerException();
         return id;
     }
 

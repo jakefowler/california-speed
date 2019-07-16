@@ -78,7 +78,7 @@ public class Controller extends WebSocketServlet {
 
     public void unregister(Player player) {
         player.valid = false;
-        players.remove(player);
+        players.remove(player.id);
     }
 
 
