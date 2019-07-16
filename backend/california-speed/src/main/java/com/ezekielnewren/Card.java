@@ -2,16 +2,41 @@ package com.ezekielnewren;
 
 public class Card {
 
+
     enum Suit {
         SPADE,
         HEART,
         DIAMOND,
-        CLUB
+        CLUB;
     }
 
     private Suit suit;
     private int rank;
-    private boolean hasMatch = false;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof Card)) {
+            return false;
+        }
+
+        Card card = (Card)obj;
+        return card.rank == this.rank;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.rank;
+    }
+
+
+    @Override
+    public String toString() {
+        return suit.toString().toLowerCase().substring(0,1) + rank;
+    }
 
     public Card(char suit, int rank) {
         suit = Character.toLowerCase(suit);
@@ -61,14 +86,5 @@ public class Card {
         }
         return true;
     }
-
-    public void setHasMatch(boolean hasMatch) {
-        this.hasMatch = hasMatch;
-    }
-
-    public boolean getHasMatch() {
-        return this.hasMatch;
-    }
-
 
 }

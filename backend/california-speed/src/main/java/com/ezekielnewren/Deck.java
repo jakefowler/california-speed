@@ -68,6 +68,17 @@ public class Deck {
         return placedDeck;
     }
 
+    /**
+     * This method is for retrieving four cards and returning them as an ArrayList to be placed in front of the player.
+     *
+     * @return ArrayList filled with four cards from main deck.
+     */
+    public ArrayList<Card> getNewPlacedCards() {
+        ArrayList<Card> placedCards = new ArrayList<Card>(this.deck.subList(0, 4));
+        this.deck.subList(0, 4).clear();
+        return placedCards;
+    }
+
     public Card drawCard() {
         Card drawnCard = this.deck.get(0);
         this.deck.remove(0);
@@ -89,6 +100,14 @@ public class Deck {
         this.deck.add(this.deck.get(index));
         this.deck.add(index, card);
         return true;
+    }
+
+    public Card getCard(int index) {
+        return this.deck.get(index);
+    }
+
+    public void setCard(int index, Card card) {
+        this.deck.set(index, card);
     }
 
 }
