@@ -47,13 +47,15 @@ class Board {
     }
 
     tryPlayOnPile(pile, player) {
+        let otherPlayer = this.players.filter(p => p !== player)[0];
+
         if (this.playablePile(pile)) {
-            this.prevPlayedCard = pile.peek();
+            player.prevPlayedCard = pile.peek();
             
             this.playOnPile(pile, player);
 
             return true;
-        } else if (!!this.prevPlayedCard && this.prevPlayedCard.equalRank(pile.peek())) {
+        } else if (!!player.prevPlayedCard && player.prevPlayedCard.equalRank(pile.peek())) {
             this.playOnPile(pile, player);
 
             if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
@@ -61,7 +63,17 @@ class Board {
             }
 
             return true;
-        } else if (!this.prevPlayedCard) {
+        } else if (!!otherPlayer.prevPlayedCard && otherPlayer.prevPlayedCard.equalRank(pile.peek())) {
+            otherPlayer.prevPlayedCard = null;
+            
+            this.playOnPile(pile, player);
+
+            if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
+                this.noPlayablePilesCallback();
+            }
+
+            return true;
+        } else if (!player.prevPlayedCard) {
             if (!this.playableMoves() && !!this.noPlayablePilesCallback) {
                 this.noPlayablePilesCallback();
             }

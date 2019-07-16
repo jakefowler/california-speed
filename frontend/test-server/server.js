@@ -26,11 +26,12 @@ wss.on('connection', function connection(ws) {
             if (!board && players.length >= 2) {
                 board = new BoardModel(players);
                 board.onGameOver(() => {
-                    sendMessageToAll(JSON.stringify({ gameOver: true }));
+                    sendMessageToAll(JSON.stringify({ gameOver: true, winner: board.gameWon(board.players[0]) ? board.players[0] : board.players[1] }));
                     
                     sendGameState();
         
-                    board = null
+                    board = null;
+                    players = [];
                 });
                 board.onNoPlayablePiles(() => {
                     if (!board.gameOver()) {
@@ -41,6 +42,8 @@ wss.on('connection', function connection(ws) {
                         sendGameState();
                     }
                 });
+
+                sendMessageToAll(JSON.stringify({gameStart: true, players: players}));
 
                 sendGameState();
             }

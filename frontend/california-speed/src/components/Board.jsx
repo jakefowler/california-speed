@@ -8,10 +8,6 @@ class GameBoard extends React.Component {
     constructor(props) {
         super(props);
 
-        let gameBoard = new BoardModel();
-        gameBoard.onGameOver(() => this.gameOver());
-        gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
-
         let ws = new WebSocket('ws://localhost:8080');
 
         ws.onopen = () => {
@@ -25,11 +21,18 @@ class GameBoard extends React.Component {
             if (!!data.board) {
                 this.updateBoardFromServer(data.board.piles);
             } else if (!!data.gameOver) {
-                this.gameOver();
+                //this.gameOver(data.winner);
+                data.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
+            } else if (!!data.gameStart) {
+                let gameBoard = new BoardModel();
+                gameBoard.onGameOver(() => this.gameOver());
+                gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
+
+                this.setState({board: gameBoard, playablePile: true, topPlayerName: data.players[0].name, bottomPlayerName: data.players[1].name});
             }
         };
 
-        this.state = {board: gameBoard, playablePile : gameBoard.playableMoves(), websocket : new WebSocket('ws://localhost:8080')};
+        this.state = {board: null, websocket : ws};
     }
 
     handleCardClick(e, pile) {
@@ -57,35 +60,44 @@ class GameBoard extends React.Component {
         // board.gameWon() ? this.props.gameWon() : this.props.gameLost();
     }
 
-    render() {
-        let {board, playablePile} = this.state;
+    renderBoard() {
+        let {board, playablePile, topPlayerName, bottomPlayerName} = this.state;
 
-        return (
-            <div id="gameBoard">
-                <div className='deck-row'>
-                    {!board.opponentDeck.isEmpty() && <Deck />}
-                    <div className='name right'>
-                        <h1>{this.props.playerName}</h1>
-                    </div>
+        return <div id="gameBoard">
+            <div className='deck-row'>
+                {!board.opponentDeck.isEmpty() && <Deck />}
+                <div className='name right'>
+                    <h1>{topPlayerName}</h1>
                 </div>
-                {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} />)}
-                <div className='deck-row'>
-                    {!board.playerDeck.isEmpty() && <Deck />}
-                    <div className='name'>
-                        <h1>{this.props.playerName}</h1>
-                    </div>
-                </div>
-                {!playablePile && !board.gameWon() && <div className='overlay'>
-                    <div className='overlay-content'>
-                        <h1>There are no playable piles</h1>
-                        <button onClick={() => {
-                            board.redrawPiles();
-                            this.setState({playablePile : board.playableMoves()})
-                            }}>Draw</button>
-                    </div>
-                </div>}
             </div>
-        );
+            {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} />)}
+            <div className='deck-row'>
+                {!board.playerDeck.isEmpty() && <Deck />}
+                <div className='name'>
+                    <h1>{bottomPlayerName}</h1>
+                </div>
+            </div>
+            {!playablePile && !board.gameWon() && <div className='overlay'>
+                <div className='overlay-content'>
+                    <h1>There are no playable piles</h1>
+                    <button onClick={() => {
+                        board.redrawPiles();
+                        this.setState({playablePile : board.playableMoves()})
+                        }}>Draw</button>
+                </div>
+            </div>}
+        </div>
+    }
+
+    render() {
+        let {board} = this.state;
+
+        return !!board ? this.renderBoard()
+                : <div className='overlay'>
+                    <div className='overlay-content'>
+                        <h1>Waiting For Game Start</h1>
+                    </div>
+                </div>
     }
 }
 
