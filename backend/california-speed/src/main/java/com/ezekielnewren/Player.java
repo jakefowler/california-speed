@@ -29,6 +29,7 @@ public class Player extends WebSocketAdapter implements Closeable {
         super.onWebSocketConnect(sess);
         log.info("Socket Connected: " + sess);
         id = UUID.randomUUID();
+        name = "";
 
         send(new JSONObject().put("push", ctrl.toJsonPlayer(this)));
     }
@@ -46,9 +47,16 @@ public class Player extends WebSocketAdapter implements Closeable {
 
 
         if (!raw.isNull("request")) {
+            if (!raw.isNull("request.msg")) {
+                JSONObject tmp = new JSONObject();
+                tmp.put("push.chat", ctrl.toJsonPlayer(this));
+                tmp.put("push.chat.msg", raw.getString("request.msg"));
 
 
-
+                log.info("");
+            } else {
+                log.warn("unknown request: "+raw.getJSONObject("request").toString());
+            }
         } else {
             log.warn("client sent something other than a request");
         }
