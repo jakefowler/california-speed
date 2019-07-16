@@ -54,18 +54,16 @@ public class Controller extends WebSocketServlet {
         factory.register(Player.class);
     }
 
-    public void sendAll(String packet) {
+    public void sendAll(JSONObject json){
         for (UUID id: players.keySet()) {
             Player p = players.get(id);
-            p.send(packet);
+            p.send(json);
         }
     }
 
-    public void sendAll(JSONObject json) {
-        sendAll(json.toString());
-    }
+    public void updateBoard(GameController game, Card[] state) {
 
-    public void updateBoard(Card[] state) {
+
 
     }
 

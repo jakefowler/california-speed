@@ -42,8 +42,19 @@ public class Player extends WebSocketAdapter implements Closeable {
     public void onWebSocketText(String message) throws RuntimeException {
         super.onWebSocketText(message);
         log.info("Received TEXT message: " + message);
+        JSONObject raw = new JSONObject(message);
 
-        send("right back at ya");
+
+        if (!raw.isNull("request")) {
+
+
+
+        } else {
+            log.warn("client sent something other than a request");
+        }
+
+
+        //send("right back at ya");
     }
 
     @Override
@@ -79,18 +90,21 @@ public class Player extends WebSocketAdapter implements Closeable {
         return name;
     }
 
-    public void send(String msg) throws RuntimeException {
-        try {
-            getRemote().sendString(msg);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
+    public void sendChat(String msg) {
+        JSONObject raw = new JSONObject();
+        raw.put("push", ctrl.toJsonPlayer(this));
+        raw.put("msg", msg);
+        send(raw);
     }
 
     public void send(JSONObject json) {
         String tmp = json.toString();
         if (tmp == null) throw new NullPointerException("is the json formatted correctly?");
-        send(tmp);
+        try {
+            getRemote().sendString(tmp);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 
     public void close() {

@@ -1,8 +1,13 @@
 package com.ezekielnewren;
 
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
+
 import java.util.ArrayList;
 
 public class GameController {
+    private static final Logger log = Log.getLogger(GameController.class);
+
 
     Controller ctrl;
 
@@ -61,7 +66,7 @@ public class GameController {
 
     public void updateGameboard() {
         Card[] state = null;
-        ctrl.updateBoard(state);
+        ctrl.updateBoard(this, state);
 
 
     }
