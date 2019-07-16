@@ -42,7 +42,7 @@ class App extends React.Component {
         </div>}
         {this.state.gameOver && <div className='overlay'>
           <div className='overlay-content'>
-            <h1>You {this.state.gameWon ? 'Win!' : 'Lose'}</h1>
+            <h1>You {this.state.gameWon ? 'Win! 😊' : 'Lose 😞'}</h1>
             <button onClick={() => this.resetGame()}>Main Menu</button>
           </div>
         </div>}
