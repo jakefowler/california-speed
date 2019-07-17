@@ -91,6 +91,15 @@ public class Game {
         return false;
     }
 
+    public boolean drawExists() {
+        for (int i = 0; i < this.placedCards.size(); i++) {
+            if (hasMatch(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * This clears out any cards from prevMoves that don't have a match.
      */
@@ -107,6 +116,10 @@ public class Game {
             clearUnmatchedPrevMoves();
             updateGameboard();
             return true;
+        }
+        if (drawExists()) {
+            noMatch();
+            updateGameboard();
         }
         return false;
     }
