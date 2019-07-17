@@ -58,7 +58,7 @@ public class Controller extends WebSocketServlet {
         }
     }
 
-    public void updateBoard(Game game, Card[] state) {
+    public void updateBoard(Game game, ArrayList<Card> state) {
 
 
 

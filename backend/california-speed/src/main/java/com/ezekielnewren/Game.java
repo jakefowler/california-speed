@@ -23,17 +23,21 @@ public class Game {
     public HashSet prevMoves;
 
     public Game(Player zero, Player one) {
+        ctrl = Controller.getInstance();
         this.players = new Player[2];
         this.players[0] = zero;
         this.players[1] = one;
-        ctrl = Controller.getInstance();
+        resetMainDecks();
+        resetPlacedCards();
+        resetCoveredCards();
+        this.prevMoves = new HashSet();
+    }
+
+    public void resetMainDecks() {
         this.players[0].mainDeck = new Deck();
         this.players[0].mainDeck.fillDeck();
         this.players[0].mainDeck.shuffle();
         this.players[1].mainDeck = this.players[0].mainDeck.splitDeck();
-        resetPlacedCards();
-        resetCoveredCards();
-        this.prevMoves = new HashSet();
     }
 
     public void retrieveCards() {
@@ -98,11 +102,17 @@ public class Game {
     }
 
     public boolean onClaim(Player p, int pile) {
-        return true;
+        if (hasMatch(pile)) {
+            placeCard(p.mainDeck.drawCard(), pile);
+            clearUnmatchedPrevMoves();
+            updateGameboard();
+            return true;
+        }
+        return false;
     }
 
     public void updateGameboard() {
-        Card[] state = null;
+        ArrayList<Card> state = this.placedCards;
         ctrl.updateBoard(this, state);
     }
 

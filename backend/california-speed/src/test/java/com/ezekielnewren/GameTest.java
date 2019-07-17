@@ -14,6 +14,8 @@ public class GameTest {
     public void setUp() throws Exception {
         Player zero = new Player();
         Player one = new Player();
+        zero.name = "zero";
+        one.name = "one";
         this.game = new Game(zero, one);
     }
 
@@ -71,7 +73,7 @@ public class GameTest {
         assertEquals(false, this.game.prevMoves.contains(testCard));
     }
 
-    @org.junit.Test
+    @Test
     public void Should_DecreaseMainDeckSizeByFour_When_getNewPlacedCardsIsCalled() {
         int sizeBefore = this.game.players[0].mainDeck.getSize();
         ArrayList<Card> placed = this.game.players[0].mainDeck.getNewPlacedCards();
@@ -80,11 +82,24 @@ public class GameTest {
         assertEquals(expected, actual);
     }
 
-    @org.junit.Test
+    @Test
     public void Should_BeSizeFour_When_getNewPlacedDeckIsCalled() {
         ArrayList<Card> placed = this.game.players[0].mainDeck.getNewPlacedCards();
         int expected = 4;
         int actual = placed.size();
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void Should_PlaceCard_When_OnClaimIsPassedValidMove() {
+        for (int i = 0; i < this.game.placedCards.size(); i++) {
+            if (this.game.hasMatch(i)) {
+                Card expected = this.game.players[0].mainDeck.getCard(0);
+                this.game.onClaim(this.game.players[0], i);
+                Card actual = this.game.placedCards.get(i);
+                assertEquals(expected, actual);
+            }
+        }
+    }
+
 }
