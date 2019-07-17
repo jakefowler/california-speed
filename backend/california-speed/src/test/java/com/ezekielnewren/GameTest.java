@@ -3,14 +3,18 @@ package com.ezekielnewren;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
-public class GameControllerTest {
-    GameController game;
+public class GameTest {
+    Game game;
 
     @Before
     public void setUp() throws Exception {
-        this.game = new GameController();
+        Player zero = new Player();
+        Player one = new Player();
+        this.game = new Game(zero, one);
     }
 
     @Test
@@ -65,5 +69,22 @@ public class GameControllerTest {
         assertEquals(true, this.game.prevMoves.contains(testCard));
         this.game.clearUnmatchedPrevMoves();
         assertEquals(false, this.game.prevMoves.contains(testCard));
+    }
+
+    @org.junit.Test
+    public void Should_DecreaseMainDeckSizeByFour_When_getNewPlacedCardsIsCalled() {
+        int sizeBefore = this.game.players[0].mainDeck.getSize();
+        ArrayList<Card> placed = this.game.players[0].mainDeck.getNewPlacedCards();
+        int expected = sizeBefore - 4;
+        int actual = this.game.players[0].mainDeck.getSize();
+        assertEquals(expected, actual);
+    }
+
+    @org.junit.Test
+    public void Should_BeSizeFour_When_getNewPlacedDeckIsCalled() {
+        ArrayList<Card> placed = this.game.players[0].mainDeck.getNewPlacedCards();
+        int expected = 4;
+        int actual = placed.size();
+        assertEquals(expected, actual);
     }
 }

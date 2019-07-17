@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.ArrayList;
 
 public class Player extends WebSocketAdapter implements Closeable {
     private static final Logger log = Log.getLogger(Controller.class);
@@ -18,6 +19,9 @@ public class Player extends WebSocketAdapter implements Closeable {
     UUID id;
     String name;
     boolean valid;
+    Deck mainDeck;
+    ArrayList<Card> coveredCards;
+
 
     public Player() {
         ctrl = Controller.getInstance();

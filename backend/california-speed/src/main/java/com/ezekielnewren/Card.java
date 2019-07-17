@@ -2,7 +2,6 @@ package com.ezekielnewren;
 
 public class Card {
 
-
     enum Suit {
         SPADE,
         HEART,
@@ -31,7 +30,6 @@ public class Card {
     public int hashCode() {
         return this.rank;
     }
-
 
     @Override
     public String toString() {

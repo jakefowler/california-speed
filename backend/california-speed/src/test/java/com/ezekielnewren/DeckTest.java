@@ -1,3 +1,5 @@
+package com.ezekielnewren;
+
 import com.ezekielnewren.Deck;
 import com.ezekielnewren.Card;
 import org.junit.Before;
@@ -74,25 +76,6 @@ public class DeckTest {
     }
 
     @org.junit.Test
-    public void Should_BeSizeFour_When_getNewPlacedDeckIsCalled() {
-        this.testDeck.fillDeck();
-        Deck placed = this.testDeck.getNewPlacedDeck();
-        int expected = 4;
-        int actual = placed.getSize();
-        assertEquals(expected, actual);
-    }
-
-    @org.junit.Test
-    public void Should_DecreaseMainDeckSizeByFour_When_getNewPlacedDeckIsCalled() {
-        this.testDeck.fillDeck();
-        int sizeBefore = this.testDeck.getSize();
-        Deck placed = this.testDeck.getNewPlacedDeck();
-        int expected = sizeBefore - 4;
-        int actual = this.testDeck.getSize();
-        assertEquals(expected, actual);
-    }
-
-    @org.junit.Test
     public void Should_DecreaseMainDeckSizeByOne_When_drawCardIsCalled() {
         this.testDeck.fillDeck();
         int sizeBefore = this.testDeck.getSize();
@@ -102,32 +85,4 @@ public class DeckTest {
         assertEquals(expected, actual);
     }
 
-    @org.junit.Test
-    public void Should_ReplaceCard_When_placeCardIsCalled() {
-        this.testDeck.fillDeck();
-        Deck placedDeck = this.testDeck.getNewPlacedDeck();
-        Card testCard = new Card('H', 1);
-        placedDeck.placeCard(3, testCard);
-        String expectedSuit = "HEART";
-        String actualSuit = placedDeck.getDeck().get(3).getSuit();
-        assertEquals(expectedSuit, actualSuit);
-        int expectedRank = 1;
-        int actualRank = placedDeck.getDeck().get(3).getRank();
-        assertEquals(expectedRank, actualRank);
-    }
-
-    @org.junit.Test
-    public void Should_MoveOldCardToBack_When_placeCardIsCalled() {
-        this.testDeck.fillDeck();
-        Deck placedDeck = this.testDeck.getNewPlacedDeck();
-        Card testCard = new Card('H', 1);
-        Card cardThatIsMoved = placedDeck.getDeck().get(3);
-        String expectedSuit = cardThatIsMoved.getSuit();
-        int expectedRank = cardThatIsMoved.getRank();
-        placedDeck.placeCard(3, testCard);
-        String actualSuit = placedDeck.getDeck().get(placedDeck.getSize() - 1).getSuit();
-        int actualRank = placedDeck.getDeck().get(placedDeck.getSize() - 1).getRank();
-        assertEquals(expectedSuit, actualSuit);
-        assertEquals(expectedRank, actualRank);
-    }
 }
