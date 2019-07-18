@@ -46,7 +46,7 @@ public class Controller extends WebSocketServlet {
 //                .build());
         opt.addOption("p", true, "port number for the server to listen on");
         opt.addOption("k", true, "path to the java keystore");
-        opt.addOption("l", true, "ip address that the server will bind to")
+        opt.addOption("l", true, "ip address that the server will bind to");
 
         String jksPath = null;
         int port = 8080;
@@ -175,7 +175,7 @@ public class Controller extends WebSocketServlet {
         }
     }
 
-    public void updateBoard(GameController game, Card[] state) {
+    public void updateBoard(Game game, ArrayList<Card> state) {
 
 
 
