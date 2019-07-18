@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.ArrayList;
 
 public class Player extends WebSocketAdapter implements Closeable {
     private static final Logger log = Log.getLogger(Controller.class);
@@ -18,17 +19,32 @@ public class Player extends WebSocketAdapter implements Closeable {
     UUID id;
     String name;
     boolean valid;
+    Deck mainDeck;
+    ArrayList<Card> coveredCards;
+
 
     public Player() {
         ctrl = Controller.getInstance();
+
+    }
+
+    void init(UUID _id, String _name) {
+        id = _id;
+        name = _name;
+
         ctrl.register(this);
+    }
+
+    void init() {
+        init(UUID.randomUUID(), "");
     }
 
     @Override
     public void onWebSocketConnect(Session sess) {
         super.onWebSocketConnect(sess);
         log.info("Socket Connected: " + sess);
-        id = UUID.randomUUID();
+
+        init();
 
         send(new JSONObject().put("push", ctrl.toJsonPlayer(this)));
     }
@@ -42,8 +58,34 @@ public class Player extends WebSocketAdapter implements Closeable {
     public void onWebSocketText(String message) throws RuntimeException {
         super.onWebSocketText(message);
         log.info("Received TEXT message: " + message);
+        JSONObject input = new JSONObject(message);
 
-        send("right back at ya");
+
+        if (!input.isNull("request")) {
+            JSONObject req = input.getJSONObject("request");
+            if (!req.isNull("msg")) {
+                JSONObject tmp = new JSONObject();
+
+                tmp.put("push", new JSONObject());
+                JSONObject push = tmp.getJSONObject("push");
+
+                String msg = input.getJSONObject("request").getString("msg");
+
+                push.put("chat", ctrl.toJsonPlayer(this));
+                push.getJSONObject("chat").put("msg", msg);
+
+                ctrl.sendAll(tmp);
+
+                log.info("");
+            } else {
+                log.warn("unknown request: "+input.getJSONObject("request").toString());
+            }
+        } else {
+            log.warn("client sent something other than a request");
+        }
+
+
+        //send("right back at ya");
     }
 
     @Override
@@ -72,6 +114,7 @@ public class Player extends WebSocketAdapter implements Closeable {
     }
 
     public UUID getUUID() {
+        if (id == null) throw new NullPointerException();
         return id;
     }
 
@@ -79,18 +122,21 @@ public class Player extends WebSocketAdapter implements Closeable {
         return name;
     }
 
-    public void send(String msg) throws RuntimeException {
-        try {
-            getRemote().sendString(msg);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
+    public void sendChat(String msg) {
+        JSONObject raw = new JSONObject();
+        raw.put("push", ctrl.toJsonPlayer(this));
+        raw.put("msg", msg);
+        send(raw);
     }
 
     public void send(JSONObject json) {
         String tmp = json.toString();
         if (tmp == null) throw new NullPointerException("is the json formatted correctly?");
-        send(tmp);
+        try {
+            getRemote().sendString(tmp);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 
     public void close() {

@@ -6,13 +6,10 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.*;
 
 public class Controller extends WebSocketServlet {
@@ -54,18 +51,16 @@ public class Controller extends WebSocketServlet {
         factory.register(Player.class);
     }
 
-    public void sendAll(String packet) {
+    public void sendAll(JSONObject json){
         for (UUID id: players.keySet()) {
             Player p = players.get(id);
-            p.send(packet);
+            p.send(json);
         }
     }
 
-    public void sendAll(JSONObject json) {
-        sendAll(json.toString());
-    }
+    public void updateBoard(Game game, ArrayList<Card> state) {
 
-    public void updateBoard(Card[] state) {
+
 
     }
 
@@ -80,7 +75,7 @@ public class Controller extends WebSocketServlet {
 
     public void unregister(Player player) {
         player.valid = false;
-        players.remove(player);
+        players.remove(player.id);
     }
 
 

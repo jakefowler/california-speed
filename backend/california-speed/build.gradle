@@ -1,10 +1,15 @@
 plugins {
-    id 'java'
+    id 'com.palantir.git-version' version '0.11.0'
 }
 
-group 'com.ezekielnewren'
-version '0.0.1-SNAPSHOT'
+apply plugin: 'java-library'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
 
+group 'com.ezekielnewren'
+version gitVersion()
+mainClassName = "com.ezekielnewren.Driver"
 
 
 sourceCompatibility = 1.8
@@ -15,8 +20,8 @@ repositories {
 
 dependencies {
     //implementation 'org.eclipse:jetty:9.4.19'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
+    //compile 'junit:junit:4.12'
     // https://mvnrepository.com/artifact/org.json/json
     compile 'org.json:json:20180813'
 
@@ -27,3 +32,31 @@ dependencies {
     compile 'org.eclipse.jetty.websocket:websocket-client:9.4.19.v20190610'
 
 }
+
+
+jar {
+    manifest {
+        attributes("Implementation-Version": version,
+                "Main-Class": mainClassName)
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    exclude('ignore/','META-INF/')
+    baseName = project.name
+    version = version
+}
+
+/*
+task copyJar(type: Copy) {
+    from jar.archivePath // here it automatically reads jar file produced from jar task
+    to 'build/libs/speed.jar'
+    // jar.archivePath
+}
+build.dependsOn copyJar
+ */
+
+
+
