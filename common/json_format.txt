@@ -73,6 +73,33 @@
 		}
 	}
 
+	## server telling the client the game is starting once two players are connected
+	{
+		"push": {
+			"gameStart": true;
+			"players": [
+				{
+					"id": "2b377add-331e-4bcc-aaba-1a42baf05fc4"
+					"name": "carl"
+				},
+				{
+					"id": "500cd347-9704-434a-9399-2ba5ac111b48"
+					"name": "timmy"
+				}
+			]
+		}
+	}
+
+	## server telling the client the game is over once one player has won
+	{
+		"push": {
+			"gameOver": true;
+			"winner": {
+				"id": "2b377add-331e-4bcc-aaba-1a42baf05fc4"
+				"name": "carl"
+			}
+		}
+	}
 
 
 

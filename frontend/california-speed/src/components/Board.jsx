@@ -18,17 +18,17 @@ class GameBoard extends React.Component {
             console.log(message.data);
             let data = JSON.parse(message.data)
 
-            if (!!data.board) {
-                this.updateBoardFromServer(data.board.piles);
-            } else if (!!data.gameOver) {
+            if (!!data.push.board) {
+                this.updateBoardFromServer(data.push.board.pile);
+            } else if (!!data.push.gameOver) {
                 //this.gameOver(data.winner);
-                data.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
-            } else if (!!data.gameStart) {
+                data.push.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
+            } else if (!!data.push.gameStart) {
                 let gameBoard = new BoardModel();
                 gameBoard.onGameOver(() => this.gameOver());
                 gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
 
-                this.setState({board: gameBoard, playablePile: true, topPlayerName: data.players[0].name, bottomPlayerName: data.players[1].name});
+                this.setState({board: gameBoard, playablePile: true, topPlayerName: data.push.players[0].name, bottomPlayerName: data.push.players[1].name});
             }
         };
 
@@ -40,7 +40,20 @@ class GameBoard extends React.Component {
         console.log(board);
 
         if (websocket.readyState == websocket.OPEN) {
-            websocket.send(JSON.stringify({claim: {player: this.props.playerName, pile: board.piles.indexOf(pile)}}));
+            websocket.send(JSON.stringify(
+                {
+                    request: { 
+                        action: { 
+                            player: {
+                                name: this.props.playerName
+                            }, 
+                            claim: { 
+                                pile: board.piles.indexOf(pile)
+                            }
+                        }
+                    }
+                })
+            );
         }
 
         // if (board.tryPlayOnPile(pile)) {
