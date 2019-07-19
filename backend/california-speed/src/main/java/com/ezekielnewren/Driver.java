@@ -22,6 +22,10 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        Controller.go(args);
+        try {
+            Controller.go(args);
+        } catch (Exception e) {
+            log.warn(e);
+        }
     }
 }
