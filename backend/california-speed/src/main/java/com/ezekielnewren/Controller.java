@@ -1,6 +1,5 @@
 package com.ezekielnewren;
 
-//import jdk.internal.jshell.tool.MessageHandler;
 import jdk.internal.joptsimple.internal.Strings;
 import org.apache.commons.cli.*;
 import org.eclipse.jetty.http.HttpVersion;
@@ -16,11 +15,8 @@ import org.json.JSONObject;
 
 import java.io.Console;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -38,12 +34,11 @@ public class Controller extends WebSocketServlet {
         Options opt = new Options();
         opt.addOption("l", true, "ip address that the server will bind to");
         opt.addOption("p", true, "port number for the server to listen on");
-        opt.addOption("k", true, "path to the java keystore");
-        opt.addOption("i", false, "insecure, run server without tls. The server will bind to localhost unless otherwise specified if this option is used");
+        opt.addOption("k", true, "path to a java keystore containing a keypair and a certificate chain");
+        opt.addOption("i", false, "insecure, run server without tls. An exception will be thrown if a non loopback/localhost address is supplied");
 
         // arguments that will be initialized by command line arguments
         boolean insecure;
-        int port;
         InetSocketAddress localAddress;
         String jksPath;
 
@@ -56,10 +51,15 @@ public class Controller extends WebSocketServlet {
                 throw new RuntimeException("option -i and -k are mutually exclusive");
             }
 
+            if (!cl.hasOption("k") && !cl.hasOption("i")) {
+                throw new RuntimeException("the server must be run with a path to a java keystore via -k or be explicitly told to run insecurely -i");
+            }
+
             // should this program use tls?
             insecure = cl.hasOption("i");
 
             // port number 8080 by default
+            int port;
             if (cl.hasOption("p")) {
                 String raw = cl.getOptionValue("p");
                 try {
@@ -106,83 +106,45 @@ public class Controller extends WebSocketServlet {
 
         // sanity check
         assert(localAddress != null);
-        assert(port >= 0);
         assert((insecure && jksPath == null) || (!insecure && jksPath != null));
 
 
         Server server = new Server();
 
-        //String host="localhost";
-        //int port = 8080;
-        //String keyStorePath = "C:\\keystore";
-        //String keyStorePassword = "";
-        String pw;
-        Console c = System.console();
-        String prompt = "keypair password: ";
-        System.out.print(prompt);
-        if (c != null) {
-            pw = new String(c.readPassword());
+        if (!insecure) {
+            String pw;
+            Console c = System.console();
+            String prompt = "keypair password: ";
+            System.out.print(prompt);
+            if (c != null) {
+                pw = new String(c.readPassword());
+            } else {
+                log.warn("cannot use console, password will show up when typed in");
+                Scanner stdin = new Scanner(System.in);
+                pw = stdin.nextLine();
+            }
+
+            ServerConnector connector = new ServerConnector(server);
+            SslContextFactory sslContextFactory = new SslContextFactory.Server.Server();
+            sslContextFactory.setKeyStorePath(jksPath);
+            sslContextFactory.setKeyStorePassword(Strings.EMPTY);
+            sslContextFactory.setKeyManagerPassword(pw);
+            SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
+            HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(new HttpConfiguration());
+            ServerConnector sslConnector = new ServerConnector(server, sslConnectionFactory, httpConnectionFactory);
+            sslConnector.setHost(localAddress.getAddress().getHostAddress());
+            sslConnector.setPort(localAddress.getPort());
+            server.addConnector(sslConnector);
+
+            log.info(localAddress.toString()+" secure websocket setup");
         } else {
-            log.warn("cannot use console, password will show up when typed in");
-            Scanner stdin = new Scanner(System.in);
-            pw = stdin.nextLine();
+            ServerConnector connector = new ServerConnector(server);
+            connector.setHost(localAddress.getAddress().getHostAddress());
+            connector.setPort(localAddress.getPort());
+            server.addConnector(connector);
+
+            log.info(localAddress.toString()+" running without tls");
         }
-
-        //String keyManagerPassword = "password";
-        //List<Handler> webSocketHandlerList = new ArrayList();
-        //MessageHandler messagehandler;
-
-
-//        // connector configuration
-//        SslContextFactory sslContextFactory = new SslContextFactory.Server.Server();
-//        sslContextFactory.setKeyStorePath(keyStorePath);
-//        sslContextFactory.setKeyStorePassword(keyStorePassword);
-//        sslContextFactory.setKeyManagerPassword(keyManagerPassword);
-//        SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
-//        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(new HttpConfiguration());
-//        ServerConnector sslConnector = new ServerConnector(server, sslConnectionFactory, httpConnectionFactory);
-//        sslConnector.setHost(host);
-//        sslConnector.setPort(port);
-//        server.addConnector(sslConnector);
-//
-//        // handler configuration
-//        HandlerCollection handlerCollection = new HandlerCollection();
-//        handlerCollection.setHandlers(webSocketHandlerList.toArray(new Handler[0]));
-//        server.setHandler(handlerCollection);
-//
-//        WebSocketHandler wsHandler = new WebSocketHandler() {
-//            @Override
-//            public void configure(WebSocketServletFactory webSocketServletFactory) {
-//                webSocketServletFactory.register(Controller.class);
-//            }
-//        };
-//        ContextHandler wsContextHandler = new ContextHandler();
-//        wsContextHandler.setHandler(wsHandler);
-//        wsContextHandler.setContextPath("/");  // this context path doesn't work ftm
-//        webSocketHandlerList.add(wsHandler);
-//
-//        messagehandler = new MessageHandler();
-//        new Thread(messagehandler).start();
-//
-//        try {
-//            server.start();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
-
-        ServerConnector connector = new ServerConnector(server);
-        SslContextFactory sslContextFactory = new SslContextFactory.Server.Server();
-        sslContextFactory.setKeyStorePath(jksPath);
-        sslContextFactory.setKeyStorePassword(Strings.EMPTY);
-        sslContextFactory.setKeyManagerPassword(pw);
-        SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
-        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(new HttpConfiguration());
-        ServerConnector sslConnector = new ServerConnector(server, sslConnectionFactory, httpConnectionFactory);
-        //sslConnector.setHost(host);
-        sslConnector.setPort(port);
-        server.addConnector(sslConnector);
 
         // Setup the basic application "context" for this application at "/"
         // This is also known as the handler tree (in jetty speak)
