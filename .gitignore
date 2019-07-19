@@ -5,6 +5,7 @@
 #gradlew.bat
 
 **/.idea/
+**/out/
 
 ## frontend
 ## npm ignore files
