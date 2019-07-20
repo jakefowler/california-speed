@@ -1,10 +1,18 @@
 ## session information
 	## immediately after connecting the server will push player id info
 	{
-		"push": {
+		"request": {
+			"player": {
+				"name": "jack"
+			}
+		}
+	}
+	
+	{
+		"response": {
 			"player": {
 				"id": "7f77d681-7276-45d9-8d66-d0b885834467",
-				"name": ""
+				"name": "jack"
 			}
 		}
 	}
