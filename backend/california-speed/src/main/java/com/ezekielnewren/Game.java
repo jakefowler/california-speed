@@ -2,7 +2,10 @@ package com.ezekielnewren;
 
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -128,5 +131,20 @@ public class Game {
         ArrayList<Card> state = this.placedCards;
         ctrl.updateBoard(this, state);
     }
+
+    public void sendBoth(JSONObject json) {
+        Arrays.asList(players).forEach((e)->e.send(json));
+    }
+
+    public Player opponent(Player p) {
+        if (p.equals(players[0])) {
+            return players[1];
+        } else if (p.equals(players[1])) {
+            return players[0];
+        } else {
+            return null;
+        }
+    }
+
 
 }

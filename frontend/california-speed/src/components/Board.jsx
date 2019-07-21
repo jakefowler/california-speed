@@ -18,21 +18,53 @@ class GameBoard extends React.Component {
             console.log(message.data);
             let data = JSON.parse(message.data)
 
-            if (!!data.response.player) {
-            	this.state.playerId = data.response.player.id;
-            } else if (!!data.push.board) {
-                this.updateBoardFromServer(data.push.board.pile);
-            } else if (!!data.push.gameOver) {
-                //this.gameOver(data.winner);
-                data.push.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
-            } else if (!!data.push.gameStart) {
-                let gameBoard = new BoardModel();
-                gameBoard.onGameOver(() => this.gameOver());
-                gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
+            if (typeof data.push !== 'undefined') {
+                if (!!data.push.board) {
+                    this.updateBoardFromServer(data.push.board.pile);
+                } else if (!!data.push.gameOver) {
+                    //this.gameOver(data.winner);
+                    data.push.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
+                } else if (!!data.push.gameStart) {
+                    let gameBoard = new BoardModel();
+                    gameBoard.onGameOver(() => this.gameOver());
+                    gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
 
-                this.setState({board: gameBoard, playablePile: true, topPlayerName: data.push.players[0].name, bottomPlayerName: data.push.players[1].name});
+                    this.setState({board: gameBoard, playablePile: true, topPlayerName: data.push.players[0].name, bottomPlayerName: data.push.players[1].name});
+                }
+            } else if (typeof data.response !== 'undefined') {
+                // server is sending us our id
+                if (this.state.playerId === '' && !!data.response.player) {
+                    this.state.playerId = data.response.player.id;
+                }
+            } else {
+                // unknown message type throw error
             }
+
         };
+
+        ws.onclose = (ev) => {
+            // TODO tell the player that they have been disconnected
+            // websocket close event codes and meanings https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+            console.log("websocket closed code: "+ev.code+" reason: "+ev.reason);
+            if (ev.code == 1000) {
+                // normal closure
+            } else if (ev.code == 1001) {
+                // going away e.g. user closes the tab
+            } else if (ev.code == 1006) {
+                // abnormal closure e.g. websocket failed to connect to the server
+            } else if (ev.code == 1015) {
+                // TLS Handshake problem i.e. a secure connection cannot be established
+
+            } else {
+                // some other problem has occurred
+            }
+            //console.log("you have been disconnected")
+        };
+
+        // this:WebSocket, ev: Event
+        //ws.onerror = (event) => {
+        //    // socket error
+        //};
 
         this.state = {board: null, websocket : ws};
     }

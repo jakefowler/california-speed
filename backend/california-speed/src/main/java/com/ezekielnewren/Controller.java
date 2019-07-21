@@ -11,6 +11,7 @@ import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Console;
@@ -26,7 +27,7 @@ public class Controller extends WebSocketServlet {
 
     static final Controller instance = new Controller();
     Map<UUID, Player> players = new HashMap<>();
-
+    Map<UUID, Game> game = new HashMap<>();
 
     public static void go(String[] args) throws Exception {
         // example usage
@@ -191,11 +192,36 @@ public class Controller extends WebSocketServlet {
     public void register(Player player) {
         players.put(player.getUUID(), player);
         player.valid = true;
+
+        if (players.size() == 2) {
+            Player[] parr = players.values().toArray(new Player[0]);
+
+            // create game object
+            Game g = new Game(parr[0], parr[1]);
+            game.put(parr[0].getUUID(), g);
+            game.put(parr[0].getUUID(), g);
+
+            // format json
+            JSONObject json = new JSONObject();
+            JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
+
+            push.put("gameStart", true);
+            JSONArray arr = push.put("players", new JSONArray()).getJSONArray("players");
+            for (Player p: players.values()) {
+                arr.put(toJsonPlayer(p, false));
+            }
+
+            g.sendBoth(json);
+
+
+
+        }
     }
 
     public void unregister(Player player) {
         player.valid = false;
         players.remove(player.id);
+        game.remove(player.id);
     }
 
 
