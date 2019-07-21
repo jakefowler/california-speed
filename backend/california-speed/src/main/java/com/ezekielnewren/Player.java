@@ -46,7 +46,7 @@ public class Player extends WebSocketAdapter implements Closeable {
 
         init();
 
-        send(new JSONObject().put("push", ctrl.toJsonPlayer(this)));
+        //send(new JSONObject().put("push", ctrl.toJsonPlayer(this)));
     }
 
     @Override
@@ -66,17 +66,19 @@ public class Player extends WebSocketAdapter implements Closeable {
             if (!req.isNull("msg")) {
                 JSONObject tmp = new JSONObject();
 
-                tmp.put("push", new JSONObject());
-                JSONObject push = tmp.getJSONObject("push");
+                JSONObject push = tmp.put("push", new JSONObject()).getJSONObject("push");
 
                 String msg = input.getJSONObject("request").getString("msg");
 
-                push.put("chat", ctrl.toJsonPlayer(this));
+                push.put("chat", ctrl.toJsonPlayer(this, true));
                 push.getJSONObject("chat").put("msg", msg);
 
                 ctrl.sendAll(tmp);
 
                 log.info("");
+            } else if (req.length() == 1 && !req.isNull("player")) {
+                name = req.getJSONObject("player").getString("name");
+                send(new JSONObject().put("response", ctrl.toJsonPlayer(this, true)));
             } else {
                 log.warn("unknown request: "+input.getJSONObject("request").toString());
             }
@@ -124,7 +126,7 @@ public class Player extends WebSocketAdapter implements Closeable {
 
     public void sendChat(String msg) {
         JSONObject raw = new JSONObject();
-        raw.put("push", ctrl.toJsonPlayer(this));
+        raw.put("push", ctrl.toJsonPlayer(this, true));
         raw.put("msg", msg);
         send(raw);
     }

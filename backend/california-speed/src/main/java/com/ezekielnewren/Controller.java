@@ -154,7 +154,7 @@ public class Controller extends WebSocketServlet {
 
         // Add a websocket to a specific path spec
         ServletHolder holderEvents = new ServletHolder("ws-events", Controller.class);
-        context.addServlet(holderEvents, "/events/*");
+        context.addServlet(holderEvents, "/");
 
         try {
             server.start();
@@ -199,12 +199,14 @@ public class Controller extends WebSocketServlet {
     }
 
 
-    public JSONObject toJsonPlayer(Player p) {
+    public JSONObject toJsonPlayer(Player p, boolean header) {
         JSONObject json = new JSONObject();
-        json.put("player", new JSONObject());
-        JSONObject player = json.getJSONObject("player");
-        player.put("id", p.id.toString());
-        player.put("name", p.name);
+        JSONObject sub = json;
+        if (header) {
+            sub = sub.put("player", new JSONObject()).getJSONObject("player");
+        }
+        sub.put("id", p.id.toString());
+        sub.put("name", p.name);
         return json;
     }
 

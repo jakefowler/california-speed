@@ -11,14 +11,16 @@ class GameBoard extends React.Component {
         let ws = new WebSocket('ws://localhost:8080');
 
         ws.onopen = () => {
-            ws.send(JSON.stringify({push: {player: {name: this.props.playerName}}}));
+            ws.send(JSON.stringify({request: {player: {name: this.props.playerName}}}));
         };
 
         ws.onmessage = (message) => {
             console.log(message.data);
             let data = JSON.parse(message.data)
 
-            if (!!data.push.board) {
+            if (!!data.response.player) {
+            	this.state.playerId = data.response.player.id;
+            } else if (!!data.push.board) {
                 this.updateBoardFromServer(data.push.board.pile);
             } else if (!!data.push.gameOver) {
                 //this.gameOver(data.winner);
