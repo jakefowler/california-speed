@@ -94,6 +94,7 @@ public class Player extends WebSocketAdapter implements Closeable {
     public void onWebSocketClose(int statusCode, String reason) {
         super.onWebSocketClose(statusCode,reason);
         log.info("Socket Closed: [" + statusCode + "] " + reason);
+        close();
     }
 
     @Override
@@ -101,6 +102,7 @@ public class Player extends WebSocketAdapter implements Closeable {
         super.onWebSocketError(cause);
         log.warn(cause);
         //cause.printStackTrace(System.err);
+        close();
     }
 
     @Override
