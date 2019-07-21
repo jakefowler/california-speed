@@ -8,7 +8,7 @@ class GameBoard extends React.Component {
     constructor(props) {
         super(props);
 
-        let ws = new WebSocket('ws://localhost:8080');
+        let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
 
         ws.onopen = () => {
             ws.send(JSON.stringify({request: {player: {name: this.props.playerName}}}));
