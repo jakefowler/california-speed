@@ -45,7 +45,7 @@ class GameBoard extends React.Component {
         ws.onclose = (ev) => {
             // TODO tell the player that they have been disconnected
             // websocket close event codes and meanings https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
-            console.log("websocket closed code: "+ev.code+" reason: "+ev.reason);
+            console.log("websocket closed code: "+ev.code+" reason: "+ev.reason+" readystate: "+ws.readyState);
             if (ev.code == 1000) {
                 // normal closure
             } else if (ev.code == 1001) {
@@ -60,11 +60,6 @@ class GameBoard extends React.Component {
             }
             //console.log("you have been disconnected")
         };
-
-        // this:WebSocket, ev: Event
-        //ws.onerror = (event) => {
-        //    // socket error
-        //};
 
         this.state = {board: null, websocket : ws};
     }
