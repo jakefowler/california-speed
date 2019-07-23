@@ -114,7 +114,7 @@ class GameBoard extends React.Component {
                     <h1>{topPlayerName}</h1>
                 </div>
             </div>
-            {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} />)}
+            {board.piles.map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} cardStyleSelected={this.props.cardStyleSelected} />)}
             <div className='deck-row'>
                 {!board.playerDeck.isEmpty() && <Deck />}
                 <div className='name'>
