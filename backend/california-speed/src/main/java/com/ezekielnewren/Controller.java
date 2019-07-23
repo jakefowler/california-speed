@@ -180,9 +180,19 @@ public class Controller extends WebSocketServlet {
     }
 
     public void updateBoard(Game game, ArrayList<Card> state) {
+        JSONObject json = new JSONObject();
 
+        JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
 
+        JSONObject board = push.put("board", new JSONObject()).getJSONObject("board");
 
+        JSONArray pile = board.put("pile", new JSONArray()).getJSONArray("pile");
+
+        for (Card card: state) {
+            pile.put(card.toString());
+        }
+
+        game.sendBoth(json);
     }
 
     public static Controller getInstance() {
@@ -191,15 +201,22 @@ public class Controller extends WebSocketServlet {
 
     public void register(Player player) {
         players.put(player.getUUID(), player);
-        player.valid = true;
+    }
 
-        if (players.size() == 2) {
-            Player[] parr = players.values().toArray(new Player[0]);
+    void matchPlayers() {
+        log.info("matching players");
+
+        ArrayList<Player> inLobby = new ArrayList<>(players.values());
+        inLobby.removeIf((p)-> p.inGame());
+
+        while (inLobby.size() >= 2) {
+            Player p0 = inLobby.remove(0);
+            Player p1 = inLobby.remove(0);
 
             // create game object
-            Game g = new Game(parr[0], parr[1]);
-            game.put(parr[0].getUUID(), g);
-            game.put(parr[0].getUUID(), g);
+            Game g = new Game(p0, p1);
+            game.put(p0.getUUID(), g);
+            game.put(p1.getUUID(), g);
 
             // format json
             JSONObject json = new JSONObject();
@@ -211,15 +228,14 @@ public class Controller extends WebSocketServlet {
                 arr.put(toJsonPlayer(p, false));
             }
 
+            // let the players know that the game is starting
             g.sendBoth(json);
-
-
-
+            g.updateGameboard();
         }
     }
 
     public void unregister(Player player) {
-        player.valid = false;
+        player.ready = false;
         players.remove(player.id);
         game.remove(player.id);
     }
@@ -232,7 +248,7 @@ public class Controller extends WebSocketServlet {
             sub = sub.put("player", new JSONObject()).getJSONObject("player");
         }
         sub.put("id", p.id.toString());
-        sub.put("name", p.name);
+        sub.put("name", p.getName());
         return json;
     }
 

@@ -1,5 +1,6 @@
 package com.ezekielnewren;
 
+import jdk.internal.joptsimple.internal.Strings;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
@@ -18,19 +19,18 @@ public class Player extends WebSocketAdapter implements Closeable {
 
     UUID id;
     String name;
-    boolean valid;
+    boolean ready;
     Deck mainDeck;
     ArrayList<Card> coveredCards;
 
 
     public Player() {
         ctrl = Controller.getInstance();
-
+        name = Strings.EMPTY;
     }
 
     void init(UUID _id, String _name) {
         id = _id;
-        name = _name;
 
         ctrl.register(this);
     }
@@ -77,8 +77,9 @@ public class Player extends WebSocketAdapter implements Closeable {
 
                 log.info("");
             } else if (req.length() == 1 && !req.isNull("player")) {
-                name = req.getJSONObject("player").getString("name");
+                setName(req.getJSONObject("player").getString("name"));
                 send(new JSONObject().put("response", ctrl.toJsonPlayer(this, true)));
+                ctrl.matchPlayers();
             } else {
                 log.warn("unknown request: "+input.getJSONObject("request").toString());
             }
@@ -124,6 +125,19 @@ public class Player extends WebSocketAdapter implements Closeable {
 
     public String getName() {
         return name;
+    }
+
+    void setName(String _name) {
+        name = _name;
+        ready = true;
+    }
+
+    boolean isReady() {
+        return ready;
+    }
+
+    boolean inGame() {
+        return ctrl.game.containsKey(id);
     }
 
     public void sendChat(String msg) {
