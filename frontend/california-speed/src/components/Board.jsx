@@ -8,8 +8,9 @@ class GameBoard extends React.Component {
     constructor(props) {
         super(props);
 
+        //let ws = new WebSocket('ws://localhost:8080');
         let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
-
+        
         ws.onopen = () => {
             ws.send(JSON.stringify({request: {player: {name: this.props.playerName}}}));
         };
@@ -34,7 +35,8 @@ class GameBoard extends React.Component {
             } else if (typeof data.response !== 'undefined') {
                 // server is sending us our id
                 if (this.state.playerId === '' && !!data.response.player) {
-                    this.state.playerId = data.response.player.id;
+                    //this.state.playerId = data.response.player.id;
+                    this.setState({playerId: data.response.player.id});
                 }
             } else {
                 // unknown message type throw error
