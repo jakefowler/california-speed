@@ -14,6 +14,10 @@ let cardStyles = [
     code: 'poker-ghost-qr'
   },
   {
+    name: 'Inverted Ghost',
+    code: 'poker-ghost-qr-inverse'
+  },
+  {
     name: 'Olde',
     code: 'poker-old-noflip-noindex-qr-Goodall-Goodall'
   },
