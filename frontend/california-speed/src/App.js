@@ -45,6 +45,55 @@ class App extends React.Component {
     };
   }
 
+  startGame() {
+    let ws = new WebSocket('ws://localhost:8080');
+    //let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
+    
+    ws.onopen = () => {
+      ws.send(JSON.stringify({request: {player: {name: this.state.playerName}}}));
+    };
+
+    ws.onmessage = (message) => {
+      console.log(message.data);
+      let data = JSON.parse(message.data)
+
+      if (!!data.push) {
+        if (!!data.push.gameStart) {
+          this.setState({players: data.push.players, gameStarted: true});
+        }
+      } else if (!!data.response) {
+        // server is sending us our id
+        if (this.state.playerId === '' && !!data.response.player) {
+          this.setState({playerId: data.response.player.id});
+        }
+      } else {
+        // unknown message type throw error
+      }
+
+    };
+
+    ws.onclose = (ev) => {
+      // TODO tell the player that they have been disconnected
+      // websocket close event codes and meanings https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+      console.log("websocket closed code: "+ev.code+" reason: "+ev.reason+" readystate: "+ws.readyState);
+      if (ev.code == 1000) {
+          // normal closure
+      } else if (ev.code == 1001) {
+          // going away e.g. user closes the tab
+      } else if (ev.code == 1006) {
+          // abnormal closure e.g. websocket failed to connect to the server
+      } else if (ev.code == 1015) {
+          // TLS Handshake problem i.e. a secure connection cannot be established
+
+      } else {
+          // some other problem has occurred
+      }
+      //console.log("you have been disconnected")
+    };
+
+    this.setState({inLobby: true, websocket: ws});
+  }
+
   gameWon() {
     this.setState({gameOver: true, gameWon: true});
   }
@@ -58,12 +107,21 @@ class App extends React.Component {
   }
 
   render() {
-    let {cardStyleSelected} = this.state;
+    let {cardStyleSelected, gameStarted, inLobby, gameOver, gameWon, players, websocket, playerName} = this.state;
 
     return (
       <div>
         <div className="container">
-          {this.state.gameStarted && <GameBoard cardStyleSelected={cardStyleSelected} playerName={this.state.playerName} gameLost={this.gameLost.bind(this)} gameWon={this.gameWon.bind(this)} />}
+          {gameStarted && 
+            <GameBoard 
+              cardStyleSelected={cardStyleSelected} 
+              players={players}
+              playerName={playerName}
+              websocket={websocket}
+              gameLost={this.gameLost.bind(this)} 
+              gameWon={this.gameWon.bind(this)} 
+            />
+          }
           <div className="dropdown" id="cardSkinSelector">
             <button className="btn btn-outline-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               &#9776;
@@ -78,20 +136,25 @@ class App extends React.Component {
             </div>
           </div>
           </div>
-          {!this.state.gameStarted && <div className='overlay'>
+          {!gameStarted && !inLobby && <div className='overlay'>
             <div className='overlay-content'>
               <h1>Welcome to <em>California Speed</em></h1>
               <div className="input-group mb-3">
-                <input type="text" className="form-control" placeholder='Enter Name' onChange={(e) => this.setState({playerName: e.target.value})} value={this.state.playerName} aria-label="Player name" aria-describedby="start-game-button" />
+                <input type="text" className="form-control" placeholder='Enter Name' onChange={(e) => this.setState({playerName: e.target.value})} value={playerName} aria-label="Player name" aria-describedby="start-game-button" />
                 <div className="input-group-append">
-                  <button className="btn btn-dark" type="button" id="start-game-button" onClick={() => this.setState({gameStarted : true})}>Start Game</button>
+                  <button className="btn btn-dark" type="button" id="start-game-button" onClick={() => this.startGame()}>Start Game</button>
                 </div>
               </div>
             </div>
           </div>}
-          {this.state.gameOver && <div className='overlay'>
+          {!gameStarted && inLobby && <div className='overlay'>
             <div className='overlay-content'>
-              <h1>You {this.state.gameWon ? 'Win! 😊' : 'Lose 😞'}</h1>
+              <h1>Waiting For Game Start</h1>
+            </div>
+          </div>}
+          {gameOver && <div className='overlay'>
+            <div className='overlay-content'>
+              <h1>You {gameWon ? 'Win! 😊' : 'Lose 😞'}</h1>
               <button className="btn btn-dark" onClick={() => this.resetGame()}>Main Menu</button>
             </div>
           </div>}

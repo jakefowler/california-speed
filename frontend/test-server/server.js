@@ -20,10 +20,8 @@ wss.on('connection', function connection(ws) {
                 if (!!board) {
                     sendGameState();
                 }
-            }
-        } else if (!!data.push) {
-            if (!!data.push.player) {    
-                players.push(data.push.player);
+            } else if (!!data.request.player) {    
+                players.push(data.request.player);
                 console.log(players);
 
                 if (!board && players.length >= 2) {
@@ -51,6 +49,8 @@ wss.on('connection', function connection(ws) {
                     sendGameState();
                 }
             }
+        } else if (!!data.push) {
+
         }
         
     });
