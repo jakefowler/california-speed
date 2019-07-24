@@ -51,7 +51,7 @@ body {
 }
 
 #gameBoard img {
-  max-width:100%;
+  max-width:100%; 
   max-height:100%;
   display: block;
   justify-self: center;
@@ -121,6 +121,9 @@ body {
   height:100%;
   justify-self: center;
   align-self: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
   position:relative;
   border-radius: 5%;
 }
@@ -143,6 +146,7 @@ body {
 
 .container {
   box-sizing: border-box;
+  position: relative;
   padding-top: 10px;
   margin: auto;
   width: 800px;
@@ -159,4 +163,19 @@ body {
   .container {
       height: 95vh;
   }
+}
+
+#cardSkinSelector {
+  position: absolute;
+  pointer-events: auto;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+}
+
+.dropdownContainer {
+  position: relative;
+  pointer-events: none; 
+  width: 100%;
+  height: 100%;
 }
