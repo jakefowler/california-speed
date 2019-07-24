@@ -148,6 +148,7 @@ public class Player extends WebSocketAdapter implements Closeable {
     }
 
     public void send(JSONObject json) {
+        log.info("sent text: "+json.toString());
         String tmp = json.toString();
         if (tmp == null) throw new NullPointerException("is the json formatted correctly?");
         try {
@@ -161,4 +162,17 @@ public class Player extends WebSocketAdapter implements Closeable {
         ctrl.unregister(this);
         super.getSession().close();
     }
+
+    public String getDisplayName() {
+        if (name != null && !Strings.EMPTY.equals(name)) {
+            return name;
+        } else {
+            return id.toString();
+        }
+    }
+
+    public String toString() {
+        return getDisplayName();
+    }
+
 }
