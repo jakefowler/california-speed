@@ -103,7 +103,7 @@ class App extends React.Component {
   }
 
   resetGame() {
-    this.setState({gameStarted : false, gameOver: false, gameWon: false});
+    this.setState({gameStarted : false, gameOver: false, gameWon: false, inLobby: false});
   }
 
   render() {
