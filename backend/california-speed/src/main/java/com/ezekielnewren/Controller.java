@@ -181,15 +181,14 @@ public class Controller extends WebSocketServlet {
 
     public void updateBoard(Game game, ArrayList<Card> state) {
         JSONObject json = new JSONObject();
-
         JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
-
         JSONObject board = push.put("board", new JSONObject()).getJSONObject("board");
-
         JSONArray pile = board.put("pile", new JSONArray()).getJSONArray("pile");
 
         for (Card card: state) {
-            pile.put(card.toString());
+            ArrayList<Card> al = new ArrayList();
+            al.add(card);
+            pile.put(toJsonDeck(al));
         }
 
         game.sendBoth(json);
@@ -258,6 +257,41 @@ public class Controller extends WebSocketServlet {
         Player pobj = players.get(id);
         return pobj;
     }
+
+    public JSONObject toJsonCard(Card c) {
+        JSONObject json = new JSONObject();
+        //JSONArray deck = json.put("deck", new JSONArray()).getJSONArray("deck");
+
+        //JSONObject card = new JSONObject();
+        json.put("suit", c.suit.toString().toLowerCase().substring(0, 1));
+        json.put("rank", c.rank);
+
+        //deck.put(card);
+        return json;
+    }
+
+    public JSONObject toJsonDeck(Deck d) {
+        return toJsonDeck(d.getDeck());
+    }
+
+    public JSONObject toJsonDeck(ArrayList<Card> alc) {
+        JSONObject json = new JSONObject();
+        JSONArray deck = json.put("deck", new JSONArray()).getJSONArray("deck");
+
+        for (Card c: alc) {
+            deck.put(toJsonCard(c));
+        }
+
+        return json;
+    }
+
+//    public Card fromJsonCard(JSONObject json, boolean header) {
+//        JSONObject sub = json;
+//        if (header) {
+//            sub = sub.getJSONObject("card");
+//        }
+//        return new Card(sub.getString("suit"), sub.getInt("rank"));
+//    }
 
 }
 

@@ -80,6 +80,12 @@ public class Player extends WebSocketAdapter implements Closeable {
                 setName(req.getJSONObject("player").getString("name"));
                 send(new JSONObject().put("response", ctrl.toJsonPlayer(this, true)));
                 ctrl.matchPlayers();
+            } else if (!req.isNull("action")) {
+                JSONObject action = req.getJSONObject("action");
+                JSONObject claim = action.getJSONObject("claim");
+                int pile = claim.getInt("pile");
+                Game g = ctrl.game.get(id);
+                g.onClaim(this, pile);
             } else {
                 log.warn("unknown request: "+input.getJSONObject("request").toString());
             }

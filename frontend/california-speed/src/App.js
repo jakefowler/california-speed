@@ -46,8 +46,8 @@ class App extends React.Component {
   }
 
   startGame() {
-    let ws = new WebSocket('ws://localhost:8080');
-    //let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
+    //let ws = new WebSocket('ws://localhost:8080');
+    let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
     
     ws.onopen = () => {
       ws.send(JSON.stringify({request: {player: {name: this.state.playerName}}}));
@@ -76,18 +76,11 @@ class App extends React.Component {
       // TODO tell the player that they have been disconnected
       // websocket close event codes and meanings https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
       console.log("websocket closed code: "+ev.code+" reason: "+ev.reason+" readystate: "+ws.readyState);
-      if (ev.code == 1000) {
-          // normal closure
-      } else if (ev.code == 1001) {
-          // going away e.g. user closes the tab
-      } else if (ev.code == 1006) {
-          // abnormal closure e.g. websocket failed to connect to the server
-      } else if (ev.code == 1015) {
-          // TLS Handshake problem i.e. a secure connection cannot be established
-
-      } else {
-          // some other problem has occurred
+      // other intesting but unnecessary codes: 1001 going away e.g. user closes the tab, 1006 abnormal closure e.g. websocket failed to connect to the server 1015 TLS Handshake problem i.e. a secure connection cannot be established
+      if (ev.code != 1000) {
+          // a problem has occurred with the websocket notify the player
       }
+      // call some clean up function
       //console.log("you have been disconnected")
     };
 

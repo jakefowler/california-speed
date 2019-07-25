@@ -9,8 +9,8 @@ public class Card {
         CLUB;
     }
 
-    private Suit suit;
-    private int rank;
+    Suit suit;
+    int rank;
 
     @Override
     public boolean equals(Object obj) {
