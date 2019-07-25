@@ -77,7 +77,7 @@ class App extends React.Component {
       // websocket close event codes and meanings https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
       console.log("websocket closed code: "+ev.code+" reason: "+ev.reason+" readystate: "+ws.readyState);
       // other intesting but unnecessary codes: 1001 going away e.g. user closes the tab, 1006 abnormal closure e.g. websocket failed to connect to the server 1015 TLS Handshake problem i.e. a secure connection cannot be established
-      if (ev.code != 1000) {
+      if (ev.code !== 1000) {
           // a problem has occurred with the websocket notify the player
       }
       // call some clean up function
@@ -125,7 +125,7 @@ class App extends React.Component {
                 return <button key={i} className={`dropdown-item ${style.code === cardStyleSelected ? 'active' : ''}`} onClick={() => this.setState({cardStyleSelected: style.code})} type="button">{style.name}</button>
               })}
               <div className="dropdown-divider"></div>
-              <p className="text-muted px-4"><small>Card styles from <a href="https://www.me.uk/cards/" target="_blank">me.uk/cards/</a></small></p>
+              <p className="text-muted px-4"><small>Card styles from <a href="https://www.me.uk/cards/" target="_blank" rel="noopener noreferrer">me.uk/cards/</a></small></p>
             </div>
           </div>
           </div>

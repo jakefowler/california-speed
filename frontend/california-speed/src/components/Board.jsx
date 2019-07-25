@@ -84,7 +84,7 @@ class GameBoard extends React.Component {
         let {board, websocket} = this.state;
         console.log(board);
 
-        if (websocket.readyState == websocket.OPEN) {
+        if (websocket.readyState === websocket.OPEN) {
             websocket.send(JSON.stringify(
                 {
                     request: { 
