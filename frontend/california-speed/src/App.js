@@ -47,7 +47,7 @@ class App extends React.Component {
 
   startGame() {
     //let ws = new WebSocket('ws://localhost:8080');
-    let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
+    let ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_SERVER);
     
     ws.onopen = () => {
       ws.send(JSON.stringify({request: {player: {name: this.state.playerName}}}));
