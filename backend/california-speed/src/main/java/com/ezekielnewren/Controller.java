@@ -285,6 +285,19 @@ public class Controller extends WebSocketServlet {
         return json;
     }
 
+    public void gameOver(Game g, Player _winner, Card prevPlayedCard) {
+        JSONObject json = new JSONObject();
+
+        JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
+
+        push.put("gameOver", true);
+        //JSONObject winner = push.put("winner", new JSONObject()).getJSONObject("winner");
+        JSONObject winner = push.put("winner", toJsonPlayer(_winner, false)).getJSONObject("winner");
+        winner.put("prevPlayedCard", toJsonCard(prevPlayedCard));
+
+        g.sendBoth(json);
+    }
+
 //    public Card fromJsonCard(JSONObject json, boolean header) {
 //        JSONObject sub = json;
 //        if (header) {

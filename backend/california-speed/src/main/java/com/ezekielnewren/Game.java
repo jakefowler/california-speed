@@ -132,6 +132,12 @@ public class Game {
         ctrl.updateBoard(this, state);
     }
 
+    public void gameOver() {
+        Player winner = null;
+        Card prevPlayedCard = null;
+        ctrl.gameOver(this, winner, prevPlayedCard);
+    }
+
     public void sendBoth(JSONObject json) {
         Arrays.asList(players).forEach((e)->e.send(json));
     }
