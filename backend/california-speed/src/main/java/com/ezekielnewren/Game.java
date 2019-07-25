@@ -4,9 +4,7 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -16,6 +14,7 @@ public class Game {
 
     public ArrayList<Card> placedCards;
     Player[] players;
+    boolean gameOver = false;
 
     /**
      * prevMoves saves the cards that are clicked and have a match. This allows the two players to each click on a card
@@ -114,17 +113,21 @@ public class Game {
     }
 
     public boolean onClaim(Player p, int pile) {
+        if (gameOver) return false;
+        boolean validMove = false;
         if (hasMatch(pile)) {
             placeCard(p.mainDeck.drawCard(), pile);
             clearUnmatchedPrevMoves();
-            updateGameboard();
-            return true;
+            validMove = true;
         }
         if (drawExists()) {
             noMatch();
-            updateGameboard();
         }
-        return false;
+        updateGameboard();
+        if (p.mainDeck.getSize() == 0) {
+            gameOver(p);
+        }
+        return validMove;
     }
 
     public void updateGameboard() {
@@ -132,10 +135,10 @@ public class Game {
         ctrl.updateBoard(this, state);
     }
 
-    public void gameOver() {
-        Player winner = null;
-        Card prevPlayedCard = null;
-        ctrl.gameOver(this, winner, prevPlayedCard);
+    public void gameOver(Player winner) {
+        if (winner == null) throw new NullPointerException();
+        ctrl.gameOver(this, winner);
+        gameOver = true;
     }
 
     public void sendBoth(JSONObject json) {

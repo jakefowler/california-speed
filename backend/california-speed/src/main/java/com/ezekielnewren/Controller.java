@@ -285,7 +285,9 @@ public class Controller extends WebSocketServlet {
         return json;
     }
 
-    public void gameOver(Game g, Player _winner, Card prevPlayedCard) {
+    public void gameOver(Game g, Player _winner) {
+        Card prevPlayedCard = _winner.prevPlayedCard;
+
         JSONObject json = new JSONObject();
 
         JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
