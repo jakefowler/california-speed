@@ -1,0 +1,181 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #00af44;
+  /* font-family: Candara,Calibri,Segoe,Segoe UI,Optima,Arial,sans-serif;  */
+}
+
+@font-face {
+  font-family: 'Hoyle Playing Cards';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Hoyle Playing Cards'), url('fonts/Hoyle Playing Cards.woff') format('woff');
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.overlay {
+  background: rgba(60, 60, 49, 0.5);
+  position: absolute;
+  content:"";
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  animation: fadein 200ms;
+}
+
+.overlay .overlay-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#gameBoard {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 25% 25% 25% 25%;
+  grid-auto-flow: row;
+  place-content: center;
+  grid-row-gap: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+#gameBoard img {
+  max-width:100%; 
+  max-height:100%;
+  display: block;
+  justify-self: center;
+  align-self: center;
+}
+
+#gameBoard svg {
+  position:absolute;
+  left:0; 
+  top:0; 
+  width:100%; 
+  height:100%;
+  justify-self: center;
+  align-self: center;
+}
+
+#gameBoard .deck-row {
+  grid-column: 1 / span 4;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-auto-flow: column;
+  width: 100%;
+  height: 100%;
+}
+
+#gameBoard .deck {
+  grid-column: 3 / span 1;
+  justify-self: right;
+  align-self: right;
+  width:100%;
+  height:100%;
+  position:relative;
+}
+
+#gameBoard .name {
+  grid-column: span 2;
+  display: flex;
+  width:100%;
+  height:100%;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+#gameBoard .name.right {
+  grid-column: 4 / span 2;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+#gameBoard .name h1 {
+  color: rgba(255, 255, 255, .75);
+  margin: 0;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, .2);
+}
+
+#gameBoard .deck svg {
+  justify-self: right;
+  align-self: right;
+}
+
+#gameBoard .pile {
+  border: 4px solid rgba(253,253,150, 0);
+  width:100%;
+  height:100%;
+  justify-self: center;
+  align-self: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  position:relative;
+  border-radius: 5%;
+}
+
+#gameBoard .pile.selected {
+  border-color: rgb(253,253,150);
+  position: relative;
+  display: inline-block;
+}
+
+#gameBoard .selected:after {
+  background: rgba(253,253,150, 0.363);
+  position: absolute;
+  content:"";
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+}
+
+.container {
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 10px;
+  margin: auto;
+  width: 800px;
+  height: 800px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+      width: 95vw;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .container {
+      height: 95vh;
+  }
+}
+
+#cardSkinSelector {
+  position: absolute;
+  pointer-events: auto;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+}
+
+.dropdownContainer {
+  position: relative;
+  pointer-events: none; 
+  width: 100%;
+  height: 100%;
+}

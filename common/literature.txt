@@ -1,0 +1,9 @@
+## websocket
+	## client side
+	https://www.tutorialspoint.com/html5/html5_websocket.htm
+	
+	## server side
+	https://www.eclipse.org/jetty/documentation/current/jetty-maven-plugin.html
+	https://github.com/jetty-project/embedded-jetty-websocket-examples/tree/master/native-jetty-websocket-example/src/main/java/org/eclipse/jetty/demo
+	
+	
