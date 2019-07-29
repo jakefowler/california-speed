@@ -7,7 +7,7 @@ import GameBoard from './components/Board'
 let cardStyles = [
   {
     name: 'Traditional',
-    code: 'traditional'
+    code: 'poker'
   },
   {
     name: 'Ghost',
@@ -41,7 +41,7 @@ class App extends React.Component {
       gameOver: false, 
       gameWon: false, 
       playerName: '',
-      cardStyleSelected: 'traditional'
+      cardStyleSelected: 'poker'
     };
   }
 
