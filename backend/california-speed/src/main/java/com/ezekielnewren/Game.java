@@ -103,7 +103,7 @@ public class Game {
 
     public boolean hasMatch(int index) {
         Card cardToMatch = this.placedCards.get(index);
-        if(!(this.prevMoves.isEmpty()) && this.prevMoves.contains(cardToMatch)) {
+        if (!(this.prevMoves.isEmpty()) && this.prevMoves.contains(cardToMatch)) {
             return true;
         }
         long count = this.placedCards
@@ -165,6 +165,36 @@ public class Game {
         }
     }
 
-
-
+    /**
+     * Checks if a card was covered but the match was never finished. Would be called after a certain time of
+     * no one making a guess. This would be used to prevent clicking random cards when there aren't any matches on the
+     * board but one of the cards in the match is already covered.
+     * @return ArrayList<Card> full of cards in placedCards that don't have matches on board but have match that was covered
+     */
+    public ArrayList<Card> checkForNeededHint() {
+        ArrayList<Card> hintCards = this.placedCards
+                .stream()
+                .filter(card -> {
+                    if (
+                        this.placedCards
+                                .stream()
+                                .filter(card2 -> card2.equals(card))
+                                .count() == 1) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                })
+                .filter(card -> {
+                    for (int i = 0; i < this.players.length; i++) {
+                        if (players[i].coveredCards.contains(card)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
+        return hintCards;
+    }
 }
