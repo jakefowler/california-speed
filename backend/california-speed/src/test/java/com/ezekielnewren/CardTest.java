@@ -1,6 +1,5 @@
 package com.ezekielnewren;
 
-import com.ezekielnewren.Card;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

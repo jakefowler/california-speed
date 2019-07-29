@@ -36,6 +36,28 @@ public class Game {
         this.prevMoves = new HashSet();
     }
 
+    /**
+     * Constructor to support more than two players in a game.
+     * @param players
+     */
+    public Game(Player[] players) {
+        ctrl = Controller.getInstance();
+        this.players = players;
+        int numPlayers = players.length;
+        Deck gameDeck = new Deck();
+        int numDecks = numPlayers / 2;
+        for (int i = 0; i < numDecks; i++) {
+            gameDeck.fillDeck();
+        }
+        gameDeck.shuffle();
+        int splitDeckSize = gameDeck.getSize() / numPlayers;
+        ArrayList<Card> cards = gameDeck.getDeck();
+        for (int i = 0; i < numPlayers; i++) {
+            this.players[i].mainDeck.addDeck(new ArrayList<Card>(cards.subList(0, splitDeckSize)));
+            cards.subList(0, splitDeckSize).clear();
+        }
+    }
+
     public void resetMainDecks() {
         this.players[0].mainDeck = new Deck();
         this.players[0].mainDeck.fillDeck();
@@ -103,9 +125,6 @@ public class Game {
         return true;
     }
 
-    /**
-     * This clears out any cards from prevMoves that don't have a match.
-     */
     public void clearUnmatchedPrevMoves() {
         this.prevMoves = (HashSet) this.prevMoves
                 .stream()
@@ -145,6 +164,7 @@ public class Game {
             return null;
         }
     }
+
 
 
 }
