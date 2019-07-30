@@ -16,6 +16,8 @@ public class Game {
 
     public ArrayList<Card> placedCards;
     Player[] players;
+    double penaltyTime = 1.0;
+    boolean isDraw;
 
     /**
      * prevMoves saves the cards that are clicked and have a match. This allows the two players to each click on a card
@@ -122,6 +124,7 @@ public class Game {
                 return false;
             }
         }
+        this.isDraw = true;
         return true;
     }
 
@@ -132,23 +135,24 @@ public class Game {
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
-    public boolean onClaim(Player p, int pile) {
+    public double onClaim(Player p, int pile) {
         if (hasMatch(pile)) {
             placeCard(p.mainDeck.drawCard(), pile);
             clearUnmatchedPrevMoves();
             updateGameboard();
-            return true;
+            return 0;
         }
         if (drawExists()) {
             noMatch();
             updateGameboard();
         }
-        return false;
+        return this.penaltyTime;
     }
 
     public void updateGameboard() {
         ArrayList<Card> state = this.placedCards;
-        ctrl.updateBoard(this, state);
+        ctrl.updateBoard(this, state, this.isDraw);
+        this.isDraw = false;
     }
 
     public void sendBoth(JSONObject json) {

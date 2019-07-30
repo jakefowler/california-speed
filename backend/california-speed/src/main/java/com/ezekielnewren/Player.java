@@ -1,6 +1,5 @@
 package com.ezekielnewren;
 
-import jdk.internal.joptsimple.internal.Strings;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.eclipse.jetty.websocket.api.Session;
@@ -26,7 +25,7 @@ public class Player extends WebSocketAdapter implements Closeable {
 
     public Player() {
         ctrl = Controller.getInstance();
-        name = Strings.EMPTY;
+        name = "";
     }
 
     void init(UUID _id, String _name) {
@@ -170,7 +169,7 @@ public class Player extends WebSocketAdapter implements Closeable {
     }
 
     public String getDisplayName() {
-        if (name != null && !Strings.EMPTY.equals(name)) {
+        if (name != null && !"".equals(name)) {
             return name;
         } else {
             return id.toString();

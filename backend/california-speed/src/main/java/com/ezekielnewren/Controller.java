@@ -1,6 +1,5 @@
 package com.ezekielnewren;
 
-import jdk.internal.joptsimple.internal.Strings;
 import org.apache.commons.cli.*;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.*;
@@ -128,7 +127,7 @@ public class Controller extends WebSocketServlet {
             ServerConnector connector = new ServerConnector(server);
             SslContextFactory sslContextFactory = new SslContextFactory.Server.Server();
             sslContextFactory.setKeyStorePath(jksPath);
-            sslContextFactory.setKeyStorePassword(Strings.EMPTY);
+            sslContextFactory.setKeyStorePassword("");
             sslContextFactory.setKeyManagerPassword(pw);
             SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
             HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(new HttpConfiguration());
@@ -179,7 +178,7 @@ public class Controller extends WebSocketServlet {
         }
     }
 
-    public void updateBoard(Game game, ArrayList<Card> state) {
+    public void updateBoard(Game game, ArrayList<Card> state, boolean isDraw) {
         JSONObject json = new JSONObject();
         JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
         JSONObject board = push.put("board", new JSONObject()).getJSONObject("board");
