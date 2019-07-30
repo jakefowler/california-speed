@@ -30,6 +30,10 @@ body {
   animation: fadein 200ms;
 }
 
+.overlay.no-dim {
+  background: rgba(60, 60, 49, 0);
+}
+
 .overlay .overlay-content {
   position: fixed;
   top: 50%;

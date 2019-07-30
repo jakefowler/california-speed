@@ -15,7 +15,19 @@ wss.on('connection', function connection(ws) {
                 console.log(board.players.find(player => player.name === data.request.action.player.name));
                 console.log('recieved: %s', message);
                 console.log('piles: %s', JSON.stringify(board.piles));
-                console.log('valid move: %s', board.tryPlayOnPile(board.piles[data.request.action.claim.pile], board.players.find(player => player.name === data.request.action.player.name)));
+                //console.log('valid move: %s', );
+
+                let player = board.players.find(player => player.name === data.request.action.player.name);
+                if (!board.tryPlayOnPile(board.piles[data.request.action.claim.pile], player)) {
+                    player.penalty = true;
+                    setTimeout(() => {
+                        player.penalty = false;
+                        
+                        if (!!board) {
+                            sendGameState();
+                        }
+                    }, 1);
+                }
 
                 if (!!board) {
                     sendGameState();
@@ -61,7 +73,7 @@ wss.on('connection', function connection(ws) {
 });
 
 function sendGameState() {
-    sendMessageToAll(JSON.stringify({push: { board: { pile: board.piles } }}));
+    sendMessageToAll(JSON.stringify({push: { board: { pile: board.piles, players: board.players } }}));
 }
 
 function sendMessageToAll(message) {

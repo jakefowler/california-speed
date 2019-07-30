@@ -10,10 +10,14 @@ class GameBoard extends React.Component {
 
         props.websocket.addEventListener('message', (message) => {
             let data = JSON.parse(message.data)
-
+            console.log(data);
             if (!!data.push) {
                 if (!!data.push.board) {
                     this.updateBoardFromServer(data.push.board.pile);
+                    if (data.push.board.players.find(player => player.name === this.props.playerName).penalty) {
+                        this.setState({penalty: true});
+                        setTimeout(() => this.setState({penalty: false}), 1000);
+                    }
                 } else if (!!data.push.gameOver) {
                     data.push.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
                 }
@@ -115,7 +119,7 @@ class GameBoard extends React.Component {
     }
 
     renderBoard() {
-        let {board, playablePile, topPlayerName, bottomPlayerName} = this.state;
+        let {board, playablePile, topPlayerName, bottomPlayerName, penalty} = this.state;
 
         return <div id="gameBoard">
             <div className='deck-row'>
@@ -138,6 +142,11 @@ class GameBoard extends React.Component {
                         board.redrawPiles();
                         this.setState({playablePile : board.playableMoves()})
                         }}>Draw</button>
+                </div>
+            </div>}
+            {penalty && <div className='overlay no-dim'>
+                <div className='overlay-content'>
+                    <h1 style={{fontSize: '100px'}}>❌</h1>
                 </div>
             </div>}
         </div>
