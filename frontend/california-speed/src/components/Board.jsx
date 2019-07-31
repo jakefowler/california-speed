@@ -2,6 +2,8 @@ import React from 'react'
 import Pile from './Pile'
 import Deck from './Deck'
 import {Board as BoardModel} from '../models/Board'
+import { CSSTransition } from "react-transition-group";
+import penaltyImage from '../img/Family_Feud_Strike_Indicator.png'
 
 class GameBoard extends React.Component {
 
@@ -81,7 +83,7 @@ class GameBoard extends React.Component {
         gameBoard.onGameOver(() => this.gameOver());
         gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
 
-        this.state = {board: gameBoard, playablePile: true, topPlayerName: props.players[0].name, bottomPlayerName: props.players[1].name, websocket : props.websocket};
+        this.state = {board: gameBoard, playablePile: true, topPlayerName: props.players[0].name, bottomPlayerName: props.players[1].name, websocket : props.websocket, penalty: false};
     }
 
     handleCardClick(e, pile) {
@@ -144,11 +146,14 @@ class GameBoard extends React.Component {
                         }}>Draw</button>
                 </div>
             </div>}
-            {penalty && <div className='overlay no-dim'>
-                <div className='overlay-content'>
-                    <h1 style={{fontSize: '100px'}}>❌</h1>
+            <CSSTransition classNames="overlayFadeOut" in={penalty} enter={false} timeout={200} unmountOnExit>
+                <div className='overlay no-dim'>
+                    <div className='overlay-content'>
+                        {/* <h1 style={{fontSize: '100px'}}>❌</h1> */}
+                        <img src={penaltyImage}></img>
+                    </div>
                 </div>
-            </div>}
+            </CSSTransition>
         </div>
     }
 

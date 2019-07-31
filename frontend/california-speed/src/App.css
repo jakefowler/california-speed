@@ -34,6 +34,17 @@ body {
   background: rgba(60, 60, 49, 0);
 }
 
+/* starting EXIT animation */
+.overlayFadeOut-exit {
+  opacity: 1;
+}
+
+/* ending EXIT animation */
+.overlayFadeOut-exit-active {
+  opacity: 0;
+  transition: all 200ms ease-in;
+}
+
 .overlay .overlay-content {
   position: fixed;
   top: 50%;
@@ -69,7 +80,7 @@ body {
   }
 }
 
-#gameBoard .cardflip-enter-done:hover {
+#gameBoard .cardflip-enter-done {
   transition: all 0.5s ease;
 }
 
@@ -165,8 +176,8 @@ body {
 
 #gameBoard .pile {
   border: 4px solid rgba(253,253,150, 0);
-  width:100%;
-  height:100%;
+  /* width:100%;
+  height:100%; */
   justify-self: center;
   align-self: center;
   display: flex;
