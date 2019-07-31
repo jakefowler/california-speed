@@ -1,5 +1,5 @@
 import React from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 class Card extends React.Component {
 
@@ -11,16 +11,16 @@ class Card extends React.Component {
     render() {
         let {card, cardStyleSelected} = this.props;
 
-        return <TransitionGroup>
+        return <SwitchTransition>
             <CSSTransition
             key={`${card.rank}${card.suit}`}
             timeout={200}
             classNames="cardflip"
-            exit={false}
+            //exit={false}
             >
                 <img src={`${process.env.PUBLIC_URL}/card_images/${cardStyleSelected}/${card.rank}${card.suit}.svg`} alt={`${card.rank}${card.suit}`}></img>
             </CSSTransition>
-        </TransitionGroup>
+        </SwitchTransition>
         
         
         // <img src={`${process.env.PUBLIC_URL}/card_images/poker-old-noflip-noindex-qr-Goodall-Goodall/${card.rank}${card.suit}.svg`}></img>
