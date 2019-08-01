@@ -28,6 +28,10 @@ let cardStyles = [
   {
     name: 'Plain',
     code: 'poker-plain-qr'
+  },
+  {
+    name: 'Russian',
+    code: 'atlasnye'
   }
 ];
 
