@@ -91,14 +91,14 @@ body {
 /* starting ENTER animation */
 .cardflip-enter {
   opacity: 1;
-  transform: rotateY(90deg);
+  transform: rotate3d(.66, .33, .1, 90deg);
   transform-style: preserve-3d;
 }
 
 /* ending ENTER animation */
 .cardflip-enter-active {
   opacity: 1;
-  transform: rotateY(0deg);
+  transform: rotate3d(.66, .33, 0, 0deg);
   transition: all 200ms ease-out;
   transform-style: preserve-3d;
 }
@@ -106,13 +106,13 @@ body {
 /* starting EXIT animation */
 .cardflip-exit {
   opacity: 1;
-  transform: rotateY(0deg);
+  transform: rotate3d(.66, .33, 0, 0deg);
 }
 
 /* ending EXIT animation */
 .cardflip-exit-active {
   opacity: 1;
-  transform: rotateY(90deg);
+  transform: rotate3d(.66, .33, .1, 90deg);
   transition: all 200ms ease-in;
   transform-style: preserve-3d;
 }
