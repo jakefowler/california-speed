@@ -49,6 +49,21 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    //Preloading card images
+    const suits = ['h', 'd', 'c', 's'];
+    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+    for (const style of cardStyles.map(style => style.code)) {
+      for (const suit of suits) {
+        for (const rank of ranks) {
+          let image = new Image();
+          image.src = `${process.env.PUBLIC_URL}/cardimages/${style}/${rank}${suit}.svg`;
+        }
+      }
+    }
+  }
+
   startGame() {
     //let ws = new WebSocket('ws://localhost:8080');
     let ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_SERVER);

@@ -16,7 +16,7 @@ class GameBoard extends React.Component {
             if (!!data.push) {
                 if (!!data.push.board) {
                     this.updateBoardFromServer(data.push.board.pile);
-                    if (data.push.board.players.find(player => player.name === this.props.playerName).penalty) {
+                    if (!!data.push.board.players && data.push.board.players.find(player => player.name === this.props.playerName).penalty) {
                         this.setState({penalty: true});
                         setTimeout(() => this.setState({penalty: false}), 1000);
                     }
