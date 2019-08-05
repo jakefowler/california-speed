@@ -25,65 +25,10 @@ class GameBoard extends React.Component {
                 }
             }
         });
-        // let ws = new WebSocket('ws://localhost:8080');
-        //let ws = new WebSocket('wss://www.ezekielnewren.com:8080');
-        
-        // ws.onopen = () => {
-        //     ws.send(JSON.stringify({request: {player: {name: this.props.playerName}}}));
-        // };
-
-        // ws.onmessage = (message) => {
-        //     console.log(message.data);
-        //     let data = JSON.parse(message.data)
-
-        //     if (!!data.push) {
-        //         if (!!data.push.board) {
-        //             this.updateBoardFromServer(data.push.board.pile);
-        //         } else if (!!data.push.gameOver) {
-        //             //this.gameOver(data.winner);
-        //             data.push.winner.name === this.props.playerName ? this.props.gameWon() : this.props.gameLost();
-        //         } else if (!!data.push.gameStart) {
-        //             let gameBoard = new BoardModel();
-        //             gameBoard.onGameOver(() => this.gameOver());
-        //             gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
-
-        //             this.setState({board: gameBoard, playablePile: true, topPlayerName: data.push.players[0].name, bottomPlayerName: data.push.players[1].name});
-        //         }
-        //     } else if (!!data.response) {
-        //         // server is sending us our id
-        //         if (this.state.playerId === '' && !!data.response.player) {
-        //             this.setState({playerId: data.response.player.id});
-        //         }
-        //     } else {
-        //         // unknown message type throw error
-        //     }
-
-        // };
-
-        // ws.onclose = (ev) => {
-        //     // TODO tell the player that they have been disconnected
-        //     // websocket close event codes and meanings https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
-        //     console.log("websocket closed code: "+ev.code+" reason: "+ev.reason+" readystate: "+ws.readyState);
-        //     if (ev.code == 1000) {
-        //         // normal closure
-        //     } else if (ev.code == 1001) {
-        //         // going away e.g. user closes the tab
-        //     } else if (ev.code == 1006) {
-        //         // abnormal closure e.g. websocket failed to connect to the server
-        //     } else if (ev.code == 1015) {
-        //         // TLS Handshake problem i.e. a secure connection cannot be established
-
-        //     } else {
-        //         // some other problem has occurred
-        //     }
-        //     //console.log("you have been disconnected")
-        // };
 
         let gameBoard = new BoardModel();
-        gameBoard.onGameOver(() => this.gameOver());
-        gameBoard.onNoPlayablePiles(() => this.setState({playablePile : false}));
 
-        this.state = {board: gameBoard, playablePile: true, topPlayerName: props.players[0].name, bottomPlayerName: props.players[1].name, websocket : props.websocket, penalty: false};
+        this.state = {board: gameBoard, playablePile: true, topPlayerName: props.players[props.players.length - 1].name, bottomPlayerName: props.players[props.players.length - 2].name, websocket : props.websocket, penalty: false};
     }
 
     handleCardClick(e, pile) {
@@ -114,10 +59,7 @@ class GameBoard extends React.Component {
     }
 
     gameOver() {
-        this.props.gameWon()
-        // let {board} = this.state;
-
-        // board.gameWon() ? this.props.gameWon() : this.props.gameLost();
+        this.props.gameWon();
     }
 
     renderBoard() {
@@ -125,16 +67,30 @@ class GameBoard extends React.Component {
 
         return <div id="gameBoard">
             <div className='deck-row'>
-                {!board.opponentDeck.isEmpty() && <Deck />}
+                {!board.opponentDeck.isEmpty() && <Deck isTop={true} />}
                 <div className='name right'>
                     <h1>{topPlayerName}</h1>
                 </div>
             </div>
             <div className='pile-row'>
-                {board.piles.slice(0, 4).map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} cardStyleSelected={this.props.cardStyleSelected} />)}
+                {board.piles.slice(0, 4).map((pile, i) => 
+                    <Pile 
+                        key={i} 
+                        pile={pile} 
+                        selected={pile === this.state.pileSelected} 
+                        onclick={this.handleCardClick.bind(this)} 
+                        cardStyleSelected={this.props.cardStyleSelected} />
+                )}
             </div>
             <div className='pile-row'>
-                {board.piles.slice(4, 8).map((pile, i) => <Pile key={i} pile={pile} selected={pile === this.state.pileSelected} onclick={this.handleCardClick.bind(this)} cardStyleSelected={this.props.cardStyleSelected} />)}
+                {board.piles.slice(4, 8).map((pile, i) => 
+                    <Pile 
+                        key={i} 
+                        pile={pile} 
+                        selected={pile === this.state.pileSelected} 
+                        onclick={this.handleCardClick.bind(this)} 
+                        cardStyleSelected={this.props.cardStyleSelected} />
+                )}
             </div>
             <div className='deck-row'>
                 {!board.playerDeck.isEmpty() && <Deck />}
@@ -154,8 +110,7 @@ class GameBoard extends React.Component {
             <CSSTransition classNames="overlayFadeOut" in={penalty} enter={false} timeout={200} unmountOnExit>
                 <div className='overlay no-dim'>
                     <div className='overlay-content'>
-                        {/* <h1 style={{fontSize: '100px'}}>❌</h1> */}
-                        <img src={penaltyImage}></img>
+                        <img src={penaltyImage} alt="penalty"></img>
                     </div>
                 </div>
             </CSSTransition>

@@ -58,8 +58,9 @@ class App extends React.Component {
     };
 
     ws.onmessage = (message) => {
-      console.log(message.data);
-      let data = JSON.parse(message.data)
+      
+      let data = JSON.parse(message.data);
+      console.log(data);
 
       if (!!data.push) {
         if (!!data.push.gameStart) {
@@ -108,7 +109,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <div className="container">
+        <div className="gameContainer">
           {gameStarted && 
             <GameBoard 
               cardStyleSelected={cardStyleSelected} 
