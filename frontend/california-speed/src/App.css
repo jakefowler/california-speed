@@ -229,7 +229,11 @@ body {
 
 @media screen and (max-width: 800px) {
   .gameContainer {
-      width: 95vw;
+    width: 95vw;
+  }
+
+  #gameBoard {
+    grid-template-rows: 10% 40% 40% 10%;
   }
 
   #gameBoard .deck {
@@ -247,11 +251,23 @@ body {
   #gameBoard .name.right {
     grid-column: 2 / span 4;
   }
+
+  #gameBoard .pile-row {
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    grid-auto-flow: row;
+  }
+
+  .overlay .overlay-content {
+    left: 20%;
+    width: 80%;
+    transform: translate(-12.5%, -50%);
+  }
 }
 
-@media screen and (max-height: 1000px) {
+@media screen and (max-height: 800px) {
   .gameContainer {
-      height: 80vh;
+      height: 95vh;
   }
 }
 
