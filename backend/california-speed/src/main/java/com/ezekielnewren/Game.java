@@ -11,9 +11,7 @@ import java.util.stream.Collectors;
 
 public class Game {
     private static final Logger log = Log.getLogger(Game.class);
-
     Controller ctrl;
-
     public ArrayList<Card> placedCards;
     Player[] players;
     double penaltyTime = 1.0;
@@ -36,28 +34,6 @@ public class Game {
         resetPlacedCards();
         resetCoveredCards();
         this.prevMoves = new HashSet();
-    }
-
-    /**
-     * Constructor to support more than two players in a game.
-     * @param players
-     */
-    public Game(Player[] players) {
-        ctrl = Controller.getInstance();
-        this.players = players;
-        int numPlayers = players.length;
-        Deck gameDeck = new Deck();
-        int numDecks = numPlayers / 2;
-        for (int i = 0; i < numDecks; i++) {
-            gameDeck.fillDeck();
-        }
-        gameDeck.shuffle();
-        int splitDeckSize = gameDeck.getSize() / numPlayers;
-        ArrayList<Card> cards = gameDeck.getDeck();
-        for (int i = 0; i < numPlayers; i++) {
-            this.players[i].mainDeck.addDeck(new ArrayList<Card>(cards.subList(0, splitDeckSize)));
-            cards.subList(0, splitDeckSize).clear();
-        }
     }
 
     public void resetMainDecks() {
@@ -135,16 +111,28 @@ public class Game {
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
+    /**
+     * Checks if the card the player clicked on has a match, places card, checks for draw, updates board,
+     * and returns zero for penalty time. If the move doesn't have a match then the penalty time is returned
+     *
+     * @param p Player who is making the move
+     * @param pile int of index for the pile the player clicked on
+     * @return double for penalty time. 0 if valid click and penalty time if invalid move
+     */
     public double onClaim(Player p, int pile) {
         if (hasMatch(pile)) {
             placeCard(p.mainDeck.drawCard(), pile);
             clearUnmatchedPrevMoves();
+            if (drawExists()) {
+                noMatch();
+            }
             updateGameboard();
             return 0;
         }
         if (drawExists()) {
             noMatch();
             updateGameboard();
+            return 0;
         }
         return this.penaltyTime;
     }
@@ -201,4 +189,5 @@ public class Game {
                 .collect(Collectors.toCollection(ArrayList::new));
         return hintCards;
     }
+
 }
