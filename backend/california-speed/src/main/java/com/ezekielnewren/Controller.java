@@ -132,7 +132,7 @@ public class Controller extends WebSocketServlet {
 
             String pw;
             if (blankPassword) {
-                pw = Strings.EMPTY;
+                pw = "";
             } else {
                 Console c = System.console();
                 String prompt = "keypair password: ";
