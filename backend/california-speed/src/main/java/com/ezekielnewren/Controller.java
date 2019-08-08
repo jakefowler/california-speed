@@ -14,11 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Console;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Key;
+import java.security.KeyStore;
+import java.security.UnrecoverableKeyException;
 import java.util.*;
 
 public class Controller extends WebSocketServlet {
@@ -112,16 +116,34 @@ public class Controller extends WebSocketServlet {
         Server server = new Server();
 
         if (!insecure) {
+            KeyStore ks = KeyStore.getInstance("JKS");
+            ks.load(new FileInputStream(jksPath), new char[0]);
+            String alias = ks.aliases().nextElement();
+
+            boolean blankPassword;
+            try {
+                Key key = ks.getKey(alias, new char[0]);
+                blankPassword = true;
+            } catch (UnrecoverableKeyException e) {
+                blankPassword = false;
+            }
+
+
+
             String pw;
-            Console c = System.console();
-            String prompt = "keypair password: ";
-            System.out.print(prompt);
-            if (c != null) {
-                pw = new String(c.readPassword());
+            if (blankPassword) {
+                pw = Strings.EMPTY;
             } else {
-                log.warn("cannot use console, password will show up when typed in");
-                Scanner stdin = new Scanner(System.in);
-                pw = stdin.nextLine();
+                Console c = System.console();
+                String prompt = "keypair password: ";
+                System.out.print(prompt);
+                if (c != null) {
+                    pw = new String(c.readPassword());
+                } else {
+                    log.warn("cannot use console, password will show up when typed in");
+                    Scanner stdin = new Scanner(System.in);
+                    pw = stdin.nextLine();
+                }
             }
 
             ServerConnector connector = new ServerConnector(server);
@@ -282,6 +304,21 @@ public class Controller extends WebSocketServlet {
         }
 
         return json;
+    }
+
+    public void gameOver(Game g, Player _winner) {
+        Card prevPlayedCard = _winner.prevPlayedCard;
+
+        JSONObject json = new JSONObject();
+
+        JSONObject push = json.put("push", new JSONObject()).getJSONObject("push");
+
+        push.put("gameOver", true);
+        //JSONObject winner = push.put("winner", new JSONObject()).getJSONObject("winner");
+        JSONObject winner = push.put("winner", toJsonPlayer(_winner, false)).getJSONObject("winner");
+        winner.put("prevPlayedCard", toJsonCard(prevPlayedCard));
+
+        g.sendBoth(json);
     }
 
 //    public Card fromJsonCard(JSONObject json, boolean header) {

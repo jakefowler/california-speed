@@ -21,7 +21,8 @@ public class Player extends WebSocketAdapter implements Closeable {
     boolean ready;
     Deck mainDeck;
     ArrayList<Card> coveredCards;
-
+    Card prevPlayedCard;
+    Card currentPlayedCard;
 
     public Player() {
         ctrl = Controller.getInstance();
@@ -85,6 +86,8 @@ public class Player extends WebSocketAdapter implements Closeable {
                 int pile = claim.getInt("pile");
                 Game g = ctrl.game.get(id);
                 g.onClaim(this, pile);
+                prevPlayedCard = currentPlayedCard;
+                currentPlayedCard = g.placedCards.get(pile);
             } else {
                 log.warn("unknown request: "+input.getJSONObject("request").toString());
             }
