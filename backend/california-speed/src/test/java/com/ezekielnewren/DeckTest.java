@@ -1,11 +1,7 @@
 package com.ezekielnewren;
 
-import com.ezekielnewren.Deck;
-import com.ezekielnewren.Card;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +14,7 @@ public class DeckTest {
         this.testDeck = new Deck();
     }
 
-    @org.junit.Test
+    @Test
     public void Should_BeSizeFiftyTwo_When_FillDeckIsCalled() {
         this.testDeck.fillDeck();
         int actual = this.testDeck.getSize();
@@ -27,7 +23,7 @@ public class DeckTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void Should_BeEqualDecks_When_splitDeckIsCalled() {
         Deck toSplit = new Deck();
         toSplit.fillDeck();
@@ -40,7 +36,7 @@ public class DeckTest {
         assertEquals(expectedSize, actualSecondHalfSize);
     }
 
-    @org.junit.Test
+    @Test
     public void Should_ReturnCorrectSize_When_getSizeIsCalled() {
         this.testDeck.fillDeck();
         int expected = 52;
@@ -52,7 +48,7 @@ public class DeckTest {
         assertEquals(expected, actual);
     }
 
-    @org.junit.Test
+    @Test
     public void Should_IncreaseSize_When_addCardIsPassedACard() {
         Card cardOne = new Card('H', 1);
         Card cardTwo = new Card('D', 4);
@@ -65,7 +61,7 @@ public class DeckTest {
         assertEquals(expected, actual);
     }
 
-    @org.junit.Test
+    @Test
     public void Should_DoubleSize_When_DeckIsAddedToItself() {
         this.testDeck.fillDeck();
         int initialSize = this.testDeck.getSize();
@@ -75,7 +71,7 @@ public class DeckTest {
         assertEquals(expected, actual);
     }
 
-    @org.junit.Test
+    @Test
     public void Should_DecreaseMainDeckSizeByOne_When_drawCardIsCalled() {
         this.testDeck.fillDeck();
         int sizeBefore = this.testDeck.getSize();

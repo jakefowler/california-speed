@@ -91,34 +91,14 @@ public class GameTest {
     }
 
     @Test
-    public void Should_PlaceCard_When_OnClaimIsPassedValidMove() {
+    public void Should_ReturnCardsWithoutPlacedMatch_When_HintIsChecked() {
         for (int i = 0; i < this.game.placedCards.size(); i++) {
-            if (this.game.hasMatch(i)) {
-                Card expected = this.game.players[0].mainDeck.getCard(0);
-                this.game.onClaim(this.game.players[0], i);
-                Card actual = this.game.placedCards.get(i);
-                assertEquals(expected, actual);
-            }
+            Card cardToAdd = new Card('H', i);
+            this.game.placedCards.set(i, cardToAdd);
+            this.game.players[0].coveredCards.add(cardToAdd);
         }
-    }
-
-    @Test
-    public void Should_DetectDrawAndReset_When_ThereAreNoMatches () {
-        for (int i = 0; i < this.game.placedCards.size(); i++) {
-            this.game.placedCards.set(i, new Card('H', i + 100));
-        }
-        this.game.onClaim(this.game.players[1], 7);
-        this.game.placedCards.forEach(card -> assertEquals(true, card.getRank() < 100));
-    }
-
-    @Test
-    public void Should_HaveEmptyCoveredCards_When_DrawOccurs () {
-        for (int i = 0; i < this.game.placedCards.size(); i++) {
-            this.game.placedCards.set(i, new Card('H', i + 100));
-        }
-        this.game.onClaim(this.game.players[1], 7);
-        for (int i = 0; i < this.game.players.length; i++) {
-            assertEquals(0, this.game.players[i].coveredCards.size());
-        }
+        ArrayList<Card> expected = this.game.placedCards;
+        ArrayList<Card> actual = this.game.checkForNeededHint();
+        assertEquals(expected, actual);
     }
 }

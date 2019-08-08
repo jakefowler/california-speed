@@ -44,10 +44,6 @@
 	{
 		"request": {
 			"action": {
-				"player": {
-					"id": "2b377add-331e-4bcc-aaba-1a42baf05fc4"
-					"name": "carl"
-				}
 				"claim": {
 					"pile": 3
 				}
@@ -55,27 +51,13 @@
 		}
 	}
 
-	## server's repsonse to the requested action
-		## failed to place card
-		{
-			"response": {
-				"action": "denied"
-			}
-		}
-
-		## succeeded in placing card
-		{
-			"response": {
-				"action": "accepted"
-			}
-		}
-
 	## server sending an updated version of the gameboard
 	{
 		"push": {
 			"board": {
 				"pile": [ "s8", "h1", "d3", "c9", 
-						  "c3", "c7", "h5", "d13"]
+						  "c3", "c7", "h5", "d13"],
+						  pickup: true
 					
 			}
 		}

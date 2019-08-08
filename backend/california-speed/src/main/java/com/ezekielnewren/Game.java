@@ -4,18 +4,17 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Game {
     private static final Logger log = Log.getLogger(Game.class);
-
     Controller ctrl;
-
     public ArrayList<Card> placedCards;
     Player[] players;
+    double penaltyTime = 1.0;
+    boolean isDraw;
+    boolean gameOver = false;
 
     /**
      * prevMoves saves the cards that are clicked and have a match. This allows the two players to each click on a card
@@ -81,7 +80,7 @@ public class Game {
 
     public boolean hasMatch(int index) {
         Card cardToMatch = this.placedCards.get(index);
-        if(!(this.prevMoves.isEmpty()) && this.prevMoves.contains(cardToMatch)) {
+        if (!(this.prevMoves.isEmpty()) && this.prevMoves.contains(cardToMatch)) {
             return true;
         }
         long count = this.placedCards
@@ -100,12 +99,10 @@ public class Game {
                 return false;
             }
         }
+        this.isDraw = true;
         return true;
     }
 
-    /**
-     * This clears out any cards from prevMoves that don't have a match.
-     */
     public void clearUnmatchedPrevMoves() {
         this.prevMoves = (HashSet) this.prevMoves
                 .stream()
@@ -113,23 +110,42 @@ public class Game {
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
-    public boolean onClaim(Player p, int pile) {
+    /**
+     * Checks if the card the player clicked on has a match, places card, checks for draw, updates board,
+     * and returns zero for penalty time. If the move doesn't have a match then the penalty time is returned
+     *
+     * @param p Player who is making the move
+     * @param pile int of index for the pile the player clicked on
+     * @return double for penalty time. 0 if valid click and penalty time if invalid move
+     */
+    public double onClaim(Player p, int pile) {
         if (hasMatch(pile)) {
             placeCard(p.mainDeck.drawCard(), pile);
             clearUnmatchedPrevMoves();
+            if (drawExists()) {
+                noMatch();
+            }
             updateGameboard();
-            return true;
+            return 0;
         }
         if (drawExists()) {
             noMatch();
             updateGameboard();
+            return 0;
         }
-        return false;
+        return this.penaltyTime;
     }
 
     public void updateGameboard() {
         ArrayList<Card> state = this.placedCards;
-        ctrl.updateBoard(this, state);
+        ctrl.updateBoard(this, state, this.isDraw);
+        this.isDraw = false;
+    }
+
+    public void gameOver(Player winner) {
+        if (winner == null) throw new NullPointerException();
+        ctrl.gameOver(this, winner);
+        gameOver = true;
     }
 
     public void sendBoth(JSONObject json) {
@@ -146,5 +162,37 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if a card was covered but the match was never finished. Would be called after a certain time of
+     * no one making a guess. This would be used to prevent clicking random cards when there aren't any matches on the
+     * board but one of the cards in the match is already covered.
+     * @return ArrayList<Card> full of cards in placedCards that don't have matches on board but have match that was covered
+     */
+    public ArrayList<Card> checkForNeededHint() {
+        ArrayList<Card> hintCards = this.placedCards
+                .stream()
+                .filter(card -> {
+                    if (
+                        this.placedCards
+                                .stream()
+                                .filter(card2 -> card2.equals(card))
+                                .count() == 1) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                })
+                .filter(card -> {
+                    for (int i = 0; i < this.players.length; i++) {
+                        if (players[i].coveredCards.contains(card)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
+        return hintCards;
+    }
 
 }

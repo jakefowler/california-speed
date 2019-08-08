@@ -7,7 +7,7 @@ import GameBoard from './components/Board'
 let cardStyles = [
   {
     name: 'Traditional',
-    code: 'traditional'
+    code: 'poker'
   },
   {
     name: 'Ghost',
@@ -28,6 +28,10 @@ let cardStyles = [
   {
     name: 'Plain',
     code: 'poker-plain-qr'
+  },
+  {
+    name: 'Russian',
+    code: 'atlasnye'
   }
 ];
 
@@ -41,8 +45,23 @@ class App extends React.Component {
       gameOver: false, 
       gameWon: false, 
       playerName: '',
-      cardStyleSelected: 'traditional'
+      cardStyleSelected: 'poker'
     };
+  }
+
+  componentDidMount() {
+    //Preloading card images
+    const suits = ['h', 'd', 'c', 's'];
+    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+    for (const style of cardStyles.map(style => style.code)) {
+      for (const suit of suits) {
+        for (const rank of ranks) {
+          let image = new Image();
+          image.src = `${process.env.PUBLIC_URL}/cardimages/${style}/${rank}${suit}.svg`;
+        }
+      }
+    }
   }
 
   startGame() {
@@ -54,8 +73,9 @@ class App extends React.Component {
     };
 
     ws.onmessage = (message) => {
-      console.log(message.data);
-      let data = JSON.parse(message.data)
+      
+      let data = JSON.parse(message.data);
+      console.log(data);
 
       if (!!data.push) {
         if (!!data.push.gameStart) {
@@ -104,7 +124,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <div className="container">
+        <div className="gameContainer">
           {gameStarted && 
             <GameBoard 
               cardStyleSelected={cardStyleSelected} 
