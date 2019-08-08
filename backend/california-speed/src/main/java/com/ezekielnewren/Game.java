@@ -122,6 +122,9 @@ public class Game {
         if (hasMatch(pile)) {
             placeCard(p.mainDeck.drawCard(), pile);
             clearUnmatchedPrevMoves();
+            if (p.mainDeck.getSize() == 0) {
+                gameOver(p);
+            }
             if (drawExists()) {
                 noMatch();
             }
