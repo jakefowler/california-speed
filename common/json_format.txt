@@ -57,8 +57,33 @@
 			"board": {
 				"pile": [ "s8", "h1", "d3", "c9", 
 						  "c3", "c7", "h5", "d13"],
-						  pickup: true
-					
+				"pickup": true,
+				"playerInfo": [{
+						"player": {
+							"id": "7f77d681-7276-45d9-8d66-d0b885834467",
+							"name": "jack"
+						}			
+						penalty: 0.0,
+						deckSize: 20
+					},
+					{
+						"player": {
+							"id": "7f77ff81-7276-45d9-8d66-d0b885834467",
+							"name": "jill"
+						}			
+						penalty: 0.0,
+						deckSize: 52-20
+					}
+				]
+			},
+		}
+	}
+
+	{
+		"push": {
+			"hint": {
+				"pile": 3,
+				"card": "a12"
 			}
 		}
 	}
